@@ -9,14 +9,14 @@ namespace Orka
 {
     public class OrkaClientConfiguration
     {
-        public LogLevel LogLevel { get; set; }
-        public Platform Platform { get; set; }
+        public LogLevel LogLevel { get; set; } = LogLevel.Information;
+        public Platform Platform { get; set; } = Platform.Android;
 
-        public bool IgnoreSelf { get; set; }
-        public bool Resend { get; set; }
+        public bool IgnoreSelf { get; set; } = true;
+        public bool Resend { get; set; } = true;
         public string? DataDirectory { get; set; }
-        public int ReconnectionInterval { get; set; }
-        public bool CacheGroupMember { get; set; }
-        public bool AutoServer { get; set; }
+        public int ReconnectionInterval { get; set; } = 5;
+        public bool CacheGroupMember { get; set; } = true;
+        public bool AutoServer { get; set; } = true;
     }
 }
