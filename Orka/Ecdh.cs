@@ -13,8 +13,7 @@ namespace Orka
         private readonly byte[] _remotePublicKey = Convert.FromHexString("04EBCA94D733E399B2DB96EACDD3F69A8BB0F74224E2B44E3357812211D2E62EFBC91BB553098E25E33A799ADC7F76FEB208DA7C6522CDB0719A305180CC54A82E");
 
         private readonly ECPrivateKeyParameters _privateKey;
-        public byte Id => 0x87;
-        public byte[] InitialShareKey { get; set; }
+        public byte[] ShareKey { get; set; }
         public byte[] PublicKey { get; set; }
         public ushort PublicKeyVersion { get; private set; }
         public Ecdh()
@@ -30,18 +29,17 @@ namespace Orka
             _privateKey = (ECPrivateKeyParameters)localKeyPair.Private;
             IBasicAgreement aKeyAgree = AgreementUtilities.GetBasicAgreement("ECDH");
             aKeyAgree.Init(localKeyPair.Private);
-            var otherPublickey = new ECPublicKeyParameters("ECDH", p256.Curve.DecodePoint(_remotePublicKey), ecDomain);
-            InitialShareKey = CalculateAgreement(_remotePublicKey);
+            ShareKey = CalculateAgreement(_remotePublicKey);
         }
 
-        public byte[] CalculateAgreement(byte[] otherPartyPublicKey)
+        private byte[] CalculateAgreement(byte[] otherPartyPublicKey)
         {
             var p256 = NistNamedCurves.GetByName("P-256");
             ECDomainParameters ecDomain = new ECDomainParameters(p256);
             var otherPublickey = new ECPublicKeyParameters("ECDH", p256.Curve.DecodePoint(otherPartyPublicKey), ecDomain);
-            IBasicAgreement aKeyAgree = AgreementUtilities.GetBasicAgreement("ECDH");
-            aKeyAgree.Init(_privateKey);
-            BigInteger sharedSecret = aKeyAgree.CalculateAgreement(otherPublickey);
+            IBasicAgreement keyAgree = AgreementUtilities.GetBasicAgreement("ECDH");
+            keyAgree.Init(_privateKey);
+            BigInteger sharedSecret = keyAgree.CalculateAgreement(otherPublickey);
             byte[] sharedSecretBytes = sharedSecret.ToByteArray();
             return MD5.HashData(sharedSecretBytes[..16]);
         }
