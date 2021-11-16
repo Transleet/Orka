@@ -20,9 +20,36 @@ public class ShortDevice
     public uint Incremental { get; set; }
 }
 
+public class FullDevice : ShortDevice
+{
+    public string Fingerprint { get; set; }
+    public string BaseBand { get; set; }
+    public string Sim { get; set; }
+    public string OsType { get; set; }
+    public string Apn { get; set; }
+    public DeviceVersion Version { get; set; }
+    public byte[] Imsi { get; set; }
+    public byte[] Guid { get; set; }
+}
+
+public class DeviceVersion
+{
+    public string Incremental { get; set; }
+    public string Release { get; set; }
+    public string CodeName { get; set; }
+    public int Sdk { get; set; }
+}
+
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
     WriteIndented = true)]
 [JsonSerializable(typeof(ShortDevice))]
 internal partial class ShortDeviceContext : JsonSerializerContext
+{
+}
+
+[JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+    WriteIndented = true)]
+[JsonSerializable(typeof(FullDevice))]
+internal partial class FullDeviceContext : JsonSerializerContext
 {
 }
