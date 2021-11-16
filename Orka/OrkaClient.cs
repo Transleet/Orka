@@ -7,6 +7,8 @@ namespace Orka
     {
         private OrkaClientConfiguration _config;
         private Uin _uin;
+        private string _dir;
+        private byte[]? _password;
         private Logger<OrkaClient> _logger;//TODO Add a way to add a logger.
 
         public async Task<ShortDevice> InitShortDevice()
@@ -35,18 +37,25 @@ namespace Orka
         {
             var client = new OrkaClient();
             var config = configuration ?? OrkaClientConfiguration.Default;
-            InitializeDirectories(config.DataDirectory, uin);
+            client._dir = InitializeDirectories(config.DataDirectory, uin);
             client._config = config;
             client._uin = uin;
             return client;
         }
 
-        public Task LoginAsync()
+        public async Task LoginAsync(byte[] passwordMd5)
         {
-            throw new NotImplementedException();
+            //check agument null of add a overload
+            _password = passwordMd5;
+            var token = await File.ReadAllBytesAsync(Path.Combine(_dir, "token"));
+            //TODO token login
+            if (_password is not null)
+            {
+                
+            }
         }
 
-        private static void InitializeDirectories(string? dataDirectory, Uin uin)
+        private static string InitializeDirectories(string? dataDirectory, Uin uin)
         {
             if (dataDirectory == null)
                 throw new ArgumentNullException(nameof(dataDirectory));
@@ -60,10 +69,13 @@ namespace Orka
                 Directory.CreateDirectory(Path.Combine(dataDirectory, "devices"));
             }
 
+            string uinPath = Path.Combine(dataDirectory, uin.ToString());
             if (!Directory.Exists(Path.Combine(dataDirectory, uin.ToString())))
             {
-                Directory.CreateDirectory(Path.Combine(dataDirectory, uin.ToString()));
+                Directory.CreateDirectory(uinPath);
             }
+
+            return uinPath;
         }
     }
 }
