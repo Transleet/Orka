@@ -15,10 +15,8 @@ namespace Orka
         private readonly ECPrivateKeyParameters _privateKey;
         public byte[] ShareKey { get; set; }
         public byte[] PublicKey { get; set; }
-        public ushort PublicKeyVersion { get; private set; }
         public Ecdh()
         {
-            PublicKeyVersion = 1;
             var p256 = NistNamedCurves.GetByName("P-256");
             ECDomainParameters ecDomain = new ECDomainParameters(p256);
             ECKeyPairGenerator generator = (ECKeyPairGenerator)GeneratorUtilities.GetKeyPairGenerator("ECDH");

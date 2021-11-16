@@ -4,16 +4,26 @@ namespace Orka
 {
     public class OrkaClientConfiguration
     {
-        public LogLevel LogLevel { get; set; } = LogLevel.Information;
-        public Platform Platform { get; set; } = Platform.Android;
+        public LogLevel LogLevel { get; set; }
+        public Platform Platform { get; set; }
 
-        public bool IgnoreSelf { get; set; } = true;
-        public bool Resend { get; set; } = true;
+        public bool IgnoreSelf { get; set; }
+        public bool Resend { get; set; }
         public string? DataDirectory { get; set; }
-        public int ReconnectionInterval { get; set; } = 5;
-        public bool CacheGroupMember { get; set; } = true;
-        public bool AutoServer { get; set; } = true;
+        public int ReconnectionInterval { get; set; }
+        public bool CacheGroupMember { get; set; }
+        public bool AutoServer { get; set; }
 
-        public static readonly OrkaClientConfiguration DefaultConfiguration = new();
+        public static readonly OrkaClientConfiguration Default = new OrkaClientConfiguration()
+        {
+            IgnoreSelf = true,
+            CacheGroupMember = true,
+            AutoServer = true,
+            ReconnectionInterval = 5,
+            Resend = true,
+            LogLevel = LogLevel.Information,
+            Platform = Platform.Android,
+            DataDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Orka", "data")
+    };
     }
 }
