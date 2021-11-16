@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+
 using Microsoft.Extensions.Logging;
 
 namespace Orka
@@ -112,8 +113,6 @@ namespace Orka
             return f;
         }
 
-        #endregion
-        public OrkaClient(Uin uin, OrkaClientConfiguration config)
 #pragma warning disable CS8618
         private OrkaClient()
 #pragma warning restore CS8618
