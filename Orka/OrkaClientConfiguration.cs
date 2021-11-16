@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Orka
 {
@@ -18,5 +13,7 @@ namespace Orka
         public int ReconnectionInterval { get; set; } = 5;
         public bool CacheGroupMember { get; set; } = true;
         public bool AutoServer { get; set; } = true;
+
+        public static readonly OrkaClientConfiguration DefaultConfiguration = new();
     }
 }
