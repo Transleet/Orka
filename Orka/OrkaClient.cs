@@ -130,13 +130,29 @@ public partial class OrkaClient
             throw new NullReferenceException();
         }
 
-        FullDevice f = (sd as FullDevice)!;
-        f.Fingerprint = $"{f.Brand}/{f.Product}/{f.Device}:10/{f.AndroidId}/{f.Incremental}:user/release-keys";
+        FullDevice f = new()
+        {
+            Device = sd.Device,
+            Board = sd.Board,
+            Brand = sd.Brand,
+            Model = sd.Model,
+            WifiSsid = sd.WifiSsid,
+            BootLoader = sd.BootLoader,
+            AndroidId = sd.AndroidId,
+            BootId = sd.BootId,
+            MacAddress = sd.MacAddress,
+            IpAddress = sd.IpAddress,
+            Imei = sd.Imei,
+            ProcVersion = sd.ProcVersion
+        };
+        f.Fingerprint = $"{f.Brand}/{f.Product}/{f.Device}:10/{f.AndroidId}/{sd.Incremental}:user/release-keys";
         f.BaseBand = "";
         f.Sim = "T-Mobile";
         f.OsType = "android";
         f.Apn = "wifi";
-        f.Version = new DeviceVersion { Incremental = f.Incremental, Release = "10", CodeName = "REL", Sdk = 29 };
+        f.Imsi = Random.Shared.GetRandomBytes(16);
+        f.Version = new DeviceVersion { Incremental = sd.Incremental, Release = "10", CodeName = "REL", Sdk = 29 };
+        f.Guid = MD5.HashData(Encoding.UTF8.GetBytes(sd.Imei!).Concat(Encoding.UTF8.GetBytes(sd.MacAddress!)).ToArray());
 
         return f;
     }
@@ -210,9 +226,8 @@ public partial class OrkaClient
             BootLoader = "U-boot",
             AndroidId = $"ORKAX.{Number.ToUInt16(md5)}.{md5[2]}{uin.ToString()[0]}",
             BootId =
-                hex.Take(8) + "-" + hex.Skip(8).Take(4) + "-" + hex.Skip(12).Take(4) + "-" + hex.Skip(16).Take(4) +
-                "-" +
-                hex.Skip(20).ToArray(),
+                hex[..8] + "-" + hex[8..12] + "-" + hex[12..16] + "-" + hex[16..20] +
+                "-" + hex[20..],
             MacAddress = $"00:50:{md5[6]:X2}:{md5[7]:X2}:{md5[8]:X2}:{md5[9]:X2}:",
             IpAddress = $"10.0.{md5[10]}.{md5[11]}",
             Imei = GenerateImei(uin),

@@ -1,4 +1,6 @@
-﻿using ProtoBuf;
+﻿using System.Text.Json;
+
+using ProtoBuf;
 
 namespace Orka;
 
@@ -20,6 +22,8 @@ public partial class OrkaClient
         public BigData? BigData { get; set; }
         public byte[]? Hb408 { get; set; }
         public int EmpTime { get; set; }
+
+        public override string ToString() => JsonSerializer.Serialize(this, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
     }
 
     public static byte[] SerializeHb408(Uin uin)
@@ -28,6 +32,7 @@ public partial class OrkaClient
         var buffer = GC.AllocateArray<byte>(9);
 
         var data = new TempData() { Num1 = 1152, Num2 = 9, };
+        throw new NotImplementedException();
     }
     [ProtoContract]
     private class TempData
