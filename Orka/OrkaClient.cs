@@ -4,8 +4,7 @@ using System.Text;
 using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
-
-using ProtoBuf;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Orka;
 
@@ -13,7 +12,7 @@ public partial class OrkaClient
 {
     private OrkaClientConfiguration _config;
     private string _dir;
-    private Logger<OrkaClient> _logger; //TODO Add a way to add a logger.
+    private ILogger<OrkaClient> _logger = new NullLogger<OrkaClient>(); //TODO Add a way to add a logger.
     private Ecdh _ecdh = new();
     private byte[]? _password;
     private Sig _sig;
@@ -112,15 +111,13 @@ public partial class OrkaClient
         if (File.Exists(Path.Combine(_config.DataDirectory!, "devices", $"{_uin}.json")))
         {
             string file = await File.ReadAllTextAsync("");
-            return JsonSerializer.Deserialize(file, ShortDeviceContext.Default.ShortDevice) ??
+            return JsonSerializer.Deserialize<ShortDevice>(file) ??
                    throw new FormatException();
         }
 
         ShortDevice shortDevice = new ShortDevice();
         FileStream fs = File.OpenWrite(Path.Combine(_config.DataDirectory!, "devices", $"{_uin}.json"));
-        Utf8JsonWriter writer = new Utf8JsonWriter(fs);
-        ShortDeviceContext.Default.ShortDevice.SerializeHandler?.Invoke(writer, shortDevice);
-        await writer.FlushAsync();
+        await JsonSerializer.SerializeAsync(fs, shortDevice);
         return shortDevice;
     }
 
