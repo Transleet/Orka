@@ -1,7 +1,9 @@
-﻿using System.Security.Cryptography;
+﻿using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using ProtoBuf;
 
 namespace Orka;
 
@@ -11,12 +13,86 @@ public partial class OrkaClient
     private string _dir;
     private Logger<OrkaClient> _logger; //TODO Add a way to add a logger.
     private byte[]? _password;
+    private Sig _sig;
     private Uin _uin;
 
 #pragma warning disable CS8618
     private OrkaClient()
 #pragma warning restore CS8618
     {
+    }
+
+    public static OrkaClient Create(Uin uin, OrkaClientConfiguration? configuration = null)
+    {
+        OrkaClient client = new OrkaClient();
+        OrkaClientConfiguration config = configuration ?? OrkaClientConfiguration.Default;
+        var sig = new Sig()
+        {
+            Seq = Number.ToUInt32(Random.Shared.GetRandomBytes(4))&0xfff,
+            Session = Random.Shared.GetRandomBytes(4),
+            RandomKey = Random.Shared.GetRandomBytes(16),
+            Tgtgt = Random.Shared.GetRandomBytes(16),
+            Tgt = Array.Empty<byte>(),
+            SKey = Array.Empty<byte>(),
+            D2 = Array.Empty<byte>(),
+            D2Key = Array.Empty<byte>(),
+            T104 = Array.Empty<byte>(),
+            T174 = Array.Empty<byte>(),
+            QrSig = Array.Empty<byte>(),
+            BigData = new BigData()
+            {
+                IPEndPoint = new IPEndPoint(IPAddress.Any, 0),
+                SigSession = Array.Empty<byte>(),
+                SessionKey = Array.Empty<byte>()
+            },
+            EmpTime = 0
+        };
+        client._dir = InitializeDirectories(config.DataDirectory, uin);
+        client._config = config;
+        client._uin = uin;
+        client._sig = sig;
+        return client;
+    }
+
+    public async Task LoginAsync()
+    {
+    }
+
+    public async Task LoginAsync(byte[] passwordMd5)
+    {
+        //check agument null of add a overload
+        _password = passwordMd5;
+        byte[] token = await File.ReadAllBytesAsync(Path.Combine(_dir, "token"));
+        //TODO token login
+        if (_password is not null)
+        {
+        }
+    }
+
+    private static string InitializeDirectories(string? dataDirectory, Uin uin)
+    {
+        if (dataDirectory == null)
+        {
+            throw new ArgumentNullException(nameof(dataDirectory));
+        }
+
+        if (!Directory.Exists(dataDirectory))
+        {
+            Directory.CreateDirectory(dataDirectory);
+        }
+
+        if (!Directory.Exists(Path.Combine(dataDirectory, "devices")))
+        {
+            Directory.CreateDirectory(Path.Combine(dataDirectory, "devices"));
+        }
+
+        string uinPath = Path.Combine(dataDirectory, uin.ToString());
+        if (!Directory.Exists(Path.Combine(dataDirectory, uin.ToString())))
+        {
+            Directory.CreateDirectory(uinPath);
+        }
+
+        return uinPath;
     }
 
     public async Task<ShortDevice> InitShortDevice()
@@ -34,6 +110,26 @@ public partial class OrkaClient
         ShortDeviceContext.Default.ShortDevice.SerializeHandler?.Invoke(writer, shortDevice);
         await writer.FlushAsync();
         return shortDevice;
+    }
+
+    public static FullDevice GenerateFullDevice(Uin uin) => GenerateFullDevice(GenerateShortDevice(uin));
+
+    public static FullDevice GenerateFullDevice(ShortDevice sd)
+    {
+        if (sd is null)
+        {
+            throw new NullReferenceException();
+        }
+
+        FullDevice f = (sd as FullDevice)!;
+        f.Fingerprint = $"{f.Brand}/{f.Product}/{f.Device}:10/{f.AndroidId}/{f.Incremental}:user/release-keys";
+        f.BaseBand = "";
+        f.Sim = "T-Mobile";
+        f.OsType = "android";
+        f.Apn = "wifi";
+        f.Version = new DeviceVersion { Incremental = f.Incremental, Release = "10", CodeName = "REL", Sdk = 29 };
+
+        return f;
     }
 
     public static ShortDevice GenerateShortDevice(Uin uin)
@@ -113,76 +209,5 @@ public partial class OrkaClient
             Imei = GenerateImei(uin),
             Incremental = Number.ToUInt32(md5[12..])
         };
-    }
-
-    public static FullDevice GenerateFullDevice(Uin uin) => GenerateFullDevice(GenerateShortDevice(uin));
-
-    public static FullDevice GenerateFullDevice(ShortDevice sd)
-    {
-        if (sd is null)
-        {
-            throw new NullReferenceException();
-        }
-
-        FullDevice f = (sd as FullDevice)!;
-        f.Fingerprint = $"{f.Brand}/{f.Product}/{f.Device}:10/{f.AndroidId}/{f.Incremental}:user/release-keys";
-        f.BaseBand = "";
-        f.Sim = "T-Mobile";
-        f.OsType = "android";
-        f.Apn = "wifi";
-        f.Version = new DeviceVersion { Incremental = f.Incremental, Release = "10", CodeName = "REL", Sdk = 29 };
-
-        return f;
-    }
-
-    public static OrkaClient Create(Uin uin, OrkaClientConfiguration? configuration = null)
-    {
-        OrkaClient client = new OrkaClient();
-        OrkaClientConfiguration config = configuration ?? OrkaClientConfiguration.Default;
-        client._dir = InitializeDirectories(config.DataDirectory, uin);
-        client._config = config;
-        client._uin = uin;
-        return client;
-    }
-
-    public async Task LoginAsync()
-    {
-    }
-
-    public async Task LoginAsync(byte[] passwordMd5)
-    {
-        //check agument null of add a overload
-        _password = passwordMd5;
-        byte[] token = await File.ReadAllBytesAsync(Path.Combine(_dir, "token"));
-        //TODO token login
-        if (_password is not null)
-        {
-        }
-    }
-
-    private static string InitializeDirectories(string? dataDirectory, Uin uin)
-    {
-        if (dataDirectory == null)
-        {
-            throw new ArgumentNullException(nameof(dataDirectory));
-        }
-
-        if (!Directory.Exists(dataDirectory))
-        {
-            Directory.CreateDirectory(dataDirectory);
-        }
-
-        if (!Directory.Exists(Path.Combine(dataDirectory, "devices")))
-        {
-            Directory.CreateDirectory(Path.Combine(dataDirectory, "devices"));
-        }
-
-        string uinPath = Path.Combine(dataDirectory, uin.ToString());
-        if (!Directory.Exists(Path.Combine(dataDirectory, uin.ToString())))
-        {
-            Directory.CreateDirectory(uinPath);
-        }
-
-        return uinPath;
     }
 }
