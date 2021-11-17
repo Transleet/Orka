@@ -32,9 +32,9 @@ public partial class OrkaClient
     [ProtoContract]
     private class TempData
     {
-        [ProtoMember(1)]public long Num1 { get; set; }
-        [ProtoMember(2)]public long Num2 { get; set; }
-        [ProtoMember(4)]public byte[] Buffer { get; set; }
-        
+        [ProtoMember(1)] public long Num1 { get; set; }
+        [ProtoMember(2)] public long Num2 { get; set; }
+        [ProtoMember(4)] public byte[]? Buffer { get; set; }
+
     }
 }

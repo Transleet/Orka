@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 
 using Microsoft.Extensions.Logging;
+
 using ProtoBuf;
 
 namespace Orka;
@@ -13,6 +14,7 @@ public partial class OrkaClient
     private OrkaClientConfiguration _config;
     private string _dir;
     private Logger<OrkaClient> _logger; //TODO Add a way to add a logger.
+    private Ecdh _ecdh = new();
     private byte[]? _password;
     private Sig _sig;
     private Uin _uin;
@@ -25,11 +27,11 @@ public partial class OrkaClient
 
     public static OrkaClient Create(Uin uin, OrkaClientConfiguration? configuration = null)
     {
-        OrkaClient client = new OrkaClient();
+        OrkaClient client = new();
         OrkaClientConfiguration config = configuration ?? OrkaClientConfiguration.Default;
-        var sig = new Sig()
+        var sig = new Sig
         {
-            Seq = Number.ToUInt32(Random.Shared.GetRandomBytes(4))&0xfff,
+            Seq = Number.ToUInt32(Random.Shared.GetRandomBytes(4)) & 0xfff,
             Session = Random.Shared.GetRandomBytes(4),
             RandomKey = Random.Shared.GetRandomBytes(16),
             Tgtgt = Random.Shared.GetRandomBytes(16),
@@ -55,16 +57,25 @@ public partial class OrkaClient
         return client;
     }
 
+    /// <summary>
+    /// Login with stored token.
+    /// </summary>
+    /// <returns></returns>
     public async Task LoginAsync()
     {
+        byte[] token = await File.ReadAllBytesAsync(Path.Combine(_dir, "token"));
+        BinaryStream stream = new BinaryStream();
+        stream.WriteUInt16(11)
+            .WriteUInt16(16)
+            ;
+        //TODO add tlv
+        //TODO token login
     }
 
     public async Task LoginAsync(byte[] passwordMd5)
     {
         //check agument null of add a overload
         _password = passwordMd5;
-        byte[] token = await File.ReadAllBytesAsync(Path.Combine(_dir, "token"));
-        //TODO token login
         if (_password is not null)
         {
         }
