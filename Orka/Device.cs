@@ -33,7 +33,7 @@ public class FullDevice : ShortDevice
 }
 
 public class DeviceVersion
-{ 
+{
     public uint Incremental { get; set; }
     public string? Release { get; set; }
     public string? CodeName { get; set; }

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net;
 
-namespace Orka
+namespace Orka;
+
+internal class BigData
 {
-    internal class BigData
-    {
-        public IPEndPoint? IPEndPoint { get; set; }
-        public byte[]? SigSession { get; set; } 
-        public byte[]? SessionKey { get; set; } 
-
-    }
+    public IPEndPoint? IPEndPoint { get; set; }
+    public byte[]? SigSession { get; set; }
+    public byte[]? SessionKey { get; set; }
 }

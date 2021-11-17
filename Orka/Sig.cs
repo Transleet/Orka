@@ -4,7 +4,6 @@ public partial class OrkaClient
 {
     internal class Sig
     {
-            
         public uint Seq { get; set; }
         public byte[]? Session { get; set; }
         public byte[]? RandomKey { get; set; }
