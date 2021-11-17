@@ -9,7 +9,7 @@ using Org.BouncyCastle.Security;
 
 namespace Orka;
 
-public class Ecdh
+internal class Ecdh
 {
     private readonly ECPrivateKeyParameters _privateKey;
 

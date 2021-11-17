@@ -1,6 +1,6 @@
 ﻿namespace Orka;
 
-public class Tea
+internal class Tea
 {
     private readonly uint[] _deltas =
     {
