@@ -3,20 +3,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Orka
 {
-    public class OrkaClient
+    public partial class OrkaClient
     {
         private OrkaClientConfiguration _config;
         private Uin _uin;
         private string _dir;
         private byte[]? _password;
-        private Logger<OrkaClient> _logger;//TODO Add a way to add a logger.
+        private Logger<OrkaClient> _logger; //TODO Add a way to add a logger.
 
         public async Task<ShortDevice> InitShortDevice()
         {
             if (File.Exists(Path.Combine(_config.DataDirectory!, "devices", $"{_uin}.json")))
             {
                 var file = await File.ReadAllTextAsync("");
-                return JsonSerializer.Deserialize(file, ShortDeviceContext.Default.ShortDevice) ?? throw new FormatException();
+                return JsonSerializer.Deserialize(file, ShortDeviceContext.Default.ShortDevice) ??
+                       throw new FormatException();
             }
 
             var shortDevice = new ShortDevice();
@@ -43,6 +44,10 @@ namespace Orka
             return client;
         }
 
+        public async Task LoginAsync()
+        {
+        }
+
         public async Task LoginAsync(byte[] passwordMd5)
         {
             //check agument null of add a overload
@@ -51,7 +56,6 @@ namespace Orka
             //TODO token login
             if (_password is not null)
             {
-                
             }
         }
 
