@@ -1,4 +1,6 @@
-﻿using ProtoBuf;
+﻿using System;
+using System.IO;
+using ProtoBuf;
 
 namespace Orka;
 
@@ -28,7 +30,9 @@ public partial class OrkaClient
         var buffer = GC.AllocateArray<byte>(9);
 
         var data = new TempData() { Num1 = 1152, Num2 = 9, };
+        throw new NotImplementedException();
     }
+
     [ProtoContract]
     private class TempData
     {
