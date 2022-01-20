@@ -1,4 +1,6 @@
-﻿namespace Orka;
+﻿using System;
+
+namespace Orka;
 
 internal static class Utils
 {

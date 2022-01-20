@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orka.Tests", "Orka.Tests\Orka.Tests.csproj", "{4043F146-3CC8-4C6C-9CED-87983495BBEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orka.Sample", "src\Orka.Sample\Orka.Sample.csproj", "{6C575208-EB60-41D2-BDFF-FCA1990C254A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +22,10 @@ Global
 		{D9B2BE28-E8D3-4F9D-8593-4C0AB97A1A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9B2BE28-E8D3-4F9D-8593-4C0AB97A1A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9B2BE28-E8D3-4F9D-8593-4C0AB97A1A33}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4043F146-3CC8-4C6C-9CED-87983495BBEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4043F146-3CC8-4C6C-9CED-87983495BBEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4043F146-3CC8-4C6C-9CED-87983495BBEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4043F146-3CC8-4C6C-9CED-87983495BBEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

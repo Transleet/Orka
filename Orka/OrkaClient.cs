@@ -1,10 +1,14 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
-
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using ProtoBuf;
 
 namespace Orka;
 
@@ -12,8 +16,8 @@ public partial class OrkaClient
 {
     private OrkaClientConfiguration _config;
     private string _dir;
-    private ILogger<OrkaClient> _logger = new NullLogger<OrkaClient>(); //TODO Add a way to add a logger.
-    private Ecdh _ecdh = new();
+    private ILoggerFactory _loggerFactory = new LoggerFactory();
+    private ILogger _logger = NullLogger.Instance;
     private byte[]? _password;
     private Sig _sig;
     private Uin _uin;
@@ -56,10 +60,12 @@ public partial class OrkaClient
         return client;
     }
 
-    /// <summary>
-    /// Login with stored token.
-    /// </summary>
-    /// <returns></returns>
+    public void AddLogger(Action<ILoggerFactory> loggerFactory)
+    {
+        loggerFactory.Invoke(_loggerFactory);
+        _logger = _loggerFactory.CreateLogger<OrkaClient>();
+    }
+
     public async Task LoginAsync()
     {
         byte[] token = await File.ReadAllBytesAsync(Path.Combine(_dir, "token"));
