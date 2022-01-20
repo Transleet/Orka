@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+
 using Serilog;
 using Serilog.Core;
 
@@ -6,7 +8,7 @@ namespace Orka.Sample
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var uin = Environment.GetEnvironmentVariable("BotAccount");
             var password = Environment.GetEnvironmentVariable("BotPassword");
@@ -16,7 +18,7 @@ namespace Orka.Sample
                 .MinimumLevel.Information()
                 .WriteTo.Console()
                 .CreateLogger();
-            client.AddLogger(f=>f.AddSerilog(logger));
+            client.AddLogger(f => f.AddSerilog(logger));
             await client.LoginAsync();
         }
     }
