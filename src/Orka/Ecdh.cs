@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Asn1.X9;
@@ -9,7 +10,6 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 
 namespace Orka;
-
 internal class Ecdh
 {
     private readonly ECPrivateKeyParameters _privateKey;
@@ -19,8 +19,7 @@ internal class Ecdh
 
     public Ecdh()
     {
-        X9ECParameters? p256 = NistNamedCurves.GetByName("P-256");
-        ECDomainParameters ecDomain = new ECDomainParameters(p256);
+        ECDomainParameters ecDomain = new(NistNamedCurves.GetByName("P-256"));
         ECKeyPairGenerator generator = (ECKeyPairGenerator)GeneratorUtilities.GetKeyPairGenerator("ECDH");
         generator.Init(new ECKeyGenerationParameters(ecDomain, new SecureRandom()));
         AsymmetricCipherKeyPair localKeyPair = generator.GenerateKeyPair();
@@ -35,15 +34,14 @@ internal class Ecdh
     public byte[] ShareKey { get; set; }
     public byte[] PublicKey { get; set; }
 
-    private byte[] CalculateAgreement(byte[] otherPartyPublicKey)
+    public byte[] CalculateAgreement(byte[] otherPartyPublicKey)
     {
         X9ECParameters? p256 = NistNamedCurves.GetByName("P-256");
-        ECDomainParameters ecDomain = new ECDomainParameters(p256);
-        ECPublicKeyParameters otherPublickey =
-            new ECPublicKeyParameters("ECDH", p256.Curve.DecodePoint(otherPartyPublicKey), ecDomain);
+        ECDomainParameters ecDomain = new(p256);
+        ECPublicKeyParameters otherPublicKey = new("ECDH", p256.Curve.DecodePoint(otherPartyPublicKey), ecDomain);
         IBasicAgreement keyAgree = AgreementUtilities.GetBasicAgreement("ECDH");
         keyAgree.Init(_privateKey);
-        BigInteger sharedSecret = keyAgree.CalculateAgreement(otherPublickey);
+        BigInteger sharedSecret = keyAgree.CalculateAgreement(otherPublicKey);
         byte[] sharedSecretBytes = sharedSecret.ToByteArray();
         return MD5.HashData(sharedSecretBytes[..16]);
     }
