@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Orka;
 
-public interface IOrkaBot : IHostedService
+public interface IOrkaBot
 {
 
 }

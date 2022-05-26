@@ -8,11 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Sample", "src\Orka.Sample\Orka.Sample.csproj", "{6C575208-EB60-41D2-BDFF-FCA1990C254A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka", "src\Orka\Orka.csproj", "{4CFD03FA-9BDB-4018-ADBF-848F85305BED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orka.Tests", "src\Orka.Tests\Orka.Tests.csproj", "{034825D3-0199-4D9D-A2B4-6B9986A1C647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Tests", "src\Orka.Tests\Orka.Tests.csproj", "{034825D3-0199-4D9D-A2B4-6B9986A1C647}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orka.Sample", "src\Orka.Sample\Orka.Sample.csproj", "{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +20,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C575208-EB60-41D2-BDFF-FCA1990C254A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +28,10 @@ Global
 		{034825D3-0199-4D9D-A2B4-6B9986A1C647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{034825D3-0199-4D9D-A2B4-6B9986A1C647}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{034825D3-0199-4D9D-A2B4-6B9986A1C647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

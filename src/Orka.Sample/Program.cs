@@ -1,40 +1,30 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Core;
+using Azure.Identity;
 
-namespace Orka.Sample;
-
-internal class Program
+namespace Orka.Sample
 {
-    private static async Task Main(string[] args)
+    public class Program
     {
-        var builder = Host.CreateDefaultBuilder(args);
-        builder.ConfigureAppConfiguration((_, config) =>
+        public static void Main(string[] args)
         {
-            config.AddUserSecrets<Program>();
-        });
-        builder.ConfigureServices((context, services) =>
-        {
-            services.Configure<OrkaClientOptions>(context.Configuration.GetSection("Account"));
-            services.AddOrkaClient();
-            services.AddLogging(config =>
+            var builder = WebApplication.CreateBuilder(args);
+
+            if (builder.Environment.IsProduction())
             {
-                config.ClearProviders();
-                config.AddSerilog(new LoggerConfiguration()
-                    .Enrich.FromLogContext()
-                    .MinimumLevel.Information()
-                    .WriteTo.Console()
-                    .CreateLogger());
+                builder.Configuration.AddAzureKeyVault(new Uri("https://orkasamplesecrets.vault.azure.net/"),
+                    new DefaultAzureCredential());
+            }
+
+            builder.Services.Configure<OrkaClientOptions>(options =>
+            {
+                options.Uin = builder.Configuration["Bot:Uin"];
+                options.Password = builder.Configuration["Bot:Password"];
             });
-            services.AddOrkaBot<SimpleBot>();
-        });
-        var app = builder.Build();
-        await app.RunAsync();
+
+            builder.Services.AddOrkaBot<EchoBot>();
+
+            var app = builder.Build();
+
+            app.Run();
+        }
     }
 }
