@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Orka.Core;
 
-namespace Orka
+namespace Orka.Bot
 {
     internal class BotService<T> : BackgroundService where T : IOrkaBot
     {
+        private readonly IOrkaClient _client;
         private readonly ILogger<T> _logger;
         private readonly T _bot;
-        private readonly IOrkaClient _client;
+        
 
         public BotService(ILogger<T> logger, T bot, IOrkaClient client)
         {

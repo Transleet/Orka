@@ -1,4 +1,4 @@
-﻿namespace Orka;
+﻿namespace Orka.Core;
 
 public readonly struct Uin
 {

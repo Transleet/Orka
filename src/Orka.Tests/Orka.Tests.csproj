@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Orka\Orka.csproj" />
+    <ProjectReference Include="..\Orka.Core\Orka.Core.csproj" />
   </ItemGroup>
 
 </Project>

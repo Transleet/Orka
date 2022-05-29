@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Orka.Services
+namespace Orka.Core.Serialization.Jce
 {
-    internal class SocketService
+    internal class JceWriter
     {
     }
 }

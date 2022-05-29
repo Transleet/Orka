@@ -8,11 +8,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka", "src\Orka\Orka.csproj", "{4CFD03FA-9BDB-4018-ADBF-848F85305BED}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Tests", "src\Orka.Tests\Orka.Tests.csproj", "{034825D3-0199-4D9D-A2B4-6B9986A1C647}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orka.Sample", "src\Orka.Sample\Orka.Sample.csproj", "{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Sample", "src\Orka.Sample\Orka.Sample.csproj", "{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orka.Bot", "src\Orka.Bot\Orka.Bot.csproj", "{4757BC9C-601D-4B2B-A9A6-4C2BA7BDFE88}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Core", "src\Orka.Core\Orka.Core.csproj", "{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,10 +22,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CFD03FA-9BDB-4018-ADBF-848F85305BED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{034825D3-0199-4D9D-A2B4-6B9986A1C647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{034825D3-0199-4D9D-A2B4-6B9986A1C647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{034825D3-0199-4D9D-A2B4-6B9986A1C647}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,6 +30,14 @@ Global
 		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADFB06C1-8ACD-4354-AFC7-656C7352D6D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4757BC9C-601D-4B2B-A9A6-4C2BA7BDFE88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4757BC9C-601D-4B2B-A9A6-4C2BA7BDFE88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4757BC9C-601D-4B2B-A9A6-4C2BA7BDFE88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4757BC9C-601D-4B2B-A9A6-4C2BA7BDFE88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Orka.Tests
+namespace Orka.Core.Extensions
 {
-    public static class Utils
+    public static class RandomExtensions
     {
         public static byte[] GetRandomBytes(this Random random, int length = 64)
         {

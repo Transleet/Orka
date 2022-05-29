@@ -1,6 +1,7 @@
+using Orka.Core.Crypto;
 using Xunit;
 
-namespace Orka.Tests;
+namespace Orka.Tests.Crypto;
 
 public class EcdhTests
 {

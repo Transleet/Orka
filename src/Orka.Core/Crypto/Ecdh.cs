@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Asn1.X9;
@@ -9,7 +8,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 
-namespace Orka;
+namespace Orka.Core.Crypto;
 internal class Ecdh
 {
     private readonly ECPrivateKeyParameters _privateKey;

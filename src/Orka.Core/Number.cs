@@ -2,7 +2,7 @@
 using System.Buffers.Binary;
 using System.Runtime.CompilerServices;
 
-namespace Orka;
+namespace Orka.Core;
 
 internal static class Number
 {

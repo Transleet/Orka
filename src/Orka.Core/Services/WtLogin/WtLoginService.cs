@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Orka.Services;
+namespace Orka.Core.Services.WtLogin;
 
 public class WtLoginService
 {
@@ -16,6 +16,13 @@ public class WtLoginService
 
     public async Task LoginAsync()
     {
-        _logger.LogInformation("Start WtLogin");
+        if (_context.Status == WtLoginStatus.Online)
+        {
+            _logger.LogError("Can't login while bot is Online.");
+            return;
+        }
+
+        _logger.LogInformation("Connecting server.");
+
     }
 }

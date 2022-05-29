@@ -1,22 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Orka;
+namespace Orka.Core.Crypto;
 
 internal class Tea
 {
     private readonly uint[] _key;
-    public Tea(byte[] key)
+    public Tea(IReadOnlyCollection<byte> key)
     {
-        if (key.Length != 16)
+        if (key.Count != 16)
         {
             throw new Exception("Key length must be 16.");
         }
-
-        _key = new uint[4];
-        _key[0] = Number.ToUInt32(key[..4]);
-        _key[1] = Number.ToUInt32(key[4..8]);
-        _key[2] = Number.ToUInt32(key[8..12]);
-        _key[3] = Number.ToUInt32(key[12..]);
+        _key = key.Chunk(4).Select(Number.ToUInt32).ToArray();
     }
 
     public byte[] Encrypt(byte[] src)
@@ -25,16 +22,16 @@ internal class Tea
         int fill = 10 - (length + 1) % 8;
         byte[] dst = new byte[fill + length + 7];
         dst[0] = (byte)((fill - 3) | 0xF8);
-        Buffer.BlockCopy(src, 0, dst, fill, src.Length);
+        src.CopyTo(dst,fill);
         ulong iv1 = 0, iv2 = 0;
-        for (int i = 0; i < length; i += 8)
+        for (int i = 0; i < dst.Length; i += 8)
         {
             ulong block = Number.ToUInt64(dst[i..]);
             ulong holder = block ^ iv1;
             iv1 = Encode(holder);
             iv1 ^= iv2;
             iv2 = holder;
-            Buffer.BlockCopy(Number.FromUInt64(iv1), 0, dst, i, 8);
+            Number.FromUInt64(iv1).CopyTo(dst,i);
         }
         return dst;
     }
@@ -48,15 +45,15 @@ internal class Tea
 
         byte[] dst = new byte[data.Length];
         ulong iv2 = 0, holder = 0;
-        for (int i = 0; i < data.Length; i += 8)
+        for (int i = 0; i < dst.Length; i += 8)
         {
             ulong iv1 = Number.ToUInt64(data[i..]);
             iv2 ^= iv1;
             iv2 = Decode(iv2);
-            Buffer.BlockCopy(Number.FromUInt64(iv2 ^ holder), 0, dst, i, 8);
+            Number.FromUInt64(iv2 ^ holder).CopyTo(dst, i);
             holder = iv1;
         }
-        return dst[(dst[0] & 7 + 3)..(data.Length - 7)];
+        return dst[((dst[0] & 7) + 3)..(data.Length - 7)];
     }
 
     private ulong Encode(ulong n)
