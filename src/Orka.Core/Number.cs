@@ -43,6 +43,12 @@ internal static class Number
     public static ulong ToUInt64(byte[] bytes) => BinaryPrimitives.ReadUInt64BigEndian(bytes);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static float ToSingle(byte[] bytes) => BinaryPrimitives.ReadSingleBigEndian(bytes);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static double ToDouble(byte[] bytes) => BinaryPrimitives.ReadDoubleBigEndian(bytes);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static byte[] FromInt16(short number)
     {
         byte[] buffer = GC.AllocateUninitializedArray<byte>(sizeof(short));
@@ -87,6 +93,22 @@ internal static class Number
     {
         byte[] buffer = GC.AllocateUninitializedArray<byte>(sizeof(ulong));
         BinaryPrimitives.WriteUInt64BigEndian(buffer, number);
+        return buffer;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte[] FromSingle(float number)
+    {
+        byte[] buffer = GC.AllocateUninitializedArray<byte>(sizeof(float));
+        BinaryPrimitives.WriteSingleBigEndian(buffer, number);
+        return buffer;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte[] FromDouble(double number)
+    {
+        byte[] buffer = GC.AllocateUninitializedArray<byte>(sizeof(double));
+        BinaryPrimitives.WriteDoubleBigEndian(buffer, number);
         return buffer;
     }
 }

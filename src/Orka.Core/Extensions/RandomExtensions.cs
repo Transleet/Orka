@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace Orka.Core.Extensions
+namespace Orka.Core.Extensions;
+
+public static class RandomExtensions
 {
-    public static class RandomExtensions
+    public static byte[] GetRandomBytes(this Random random, int length = 64)
     {
-        public static byte[] GetRandomBytes(this Random random, int length = 64)
-        {
-            var arr = GC.AllocateUninitializedArray<byte>(length);
-            random.NextBytes(arr);
-            return arr;
-        }
+        var arr = GC.AllocateUninitializedArray<byte>(length);
+        random.NextBytes(arr);
+        return arr;
     }
 }

@@ -1,6 +1,5 @@
-﻿namespace Orka.Core.Services.KeyStore
+﻿namespace Orka.Core.Services.KeyStore;
+
+internal interface IKeyStore
 {
-    internal interface IKeyStore
-    {
-    }
 }

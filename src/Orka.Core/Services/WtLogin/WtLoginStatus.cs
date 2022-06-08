@@ -1,8 +1,7 @@
-﻿namespace Orka.Core.Services.WtLogin
+﻿namespace Orka.Core.Services.WtLogin;
+
+public enum WtLoginStatus
 {
-    public enum WtLoginStatus
-    {
-        Offline,
-        Online
-    }
+    Offline,
+    Online
 }

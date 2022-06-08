@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Orka.Core.Serialization.Jce
+namespace Orka.Tests.Serialization.Jce;
+
+internal class JceSerializerTests
 {
-    internal class JceReader
-    {
-    }
 }

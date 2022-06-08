@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Orka.Core.Serialization.Jce
 {
-    internal class JceWriter
+    internal partial class TestJceStruct
     {
+        [JceMember(1)] public string Text { get; set; }
     }
 }

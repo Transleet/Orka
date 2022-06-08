@@ -1,9 +1,8 @@
 ﻿using Orka.Bot;
 
-namespace Orka.Sample
-{
-    public class EchoBot:IOrkaBot
-    {
+namespace Orka.Sample;
 
-    }
+public class EchoBot:IOrkaBot
+{
+
 }
