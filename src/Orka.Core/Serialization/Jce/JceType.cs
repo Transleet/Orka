@@ -1,11 +1,11 @@
-﻿namespace Orka.SourceGenerators;
+﻿namespace Orka.Core.Serialization.Jce;
 
-internal enum JceType : sbyte
+internal enum JceType : byte
 {
-    Byte = 0,
-    Short = 1,
-    Int = 2,
-    Long = 3,
+    Int8 = 0,
+    Int16 = 1,
+    Int32 = 2,
+    Int64 = 3,
     Float = 4,
     Double = 5,
     String1 = 6,
@@ -16,5 +16,5 @@ internal enum JceType : sbyte
     StructEnd = 11,
     ZeroTag = 12,
     SimpleList = 13,
-    Null = sbyte.MaxValue
+    Null = byte.MaxValue
 }

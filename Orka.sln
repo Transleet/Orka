@@ -16,8 +16,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Bot", "src\Orka.Bot\Or
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.Core", "src\Orka.Core\Orka.Core.csproj", "{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orka.SourceGeneration", "src\Orka.SourceGeneration\Orka.SourceGeneration.csproj", "{322687C3-66E8-425A-9A35-42D6914FDE5A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,10 +38,6 @@ Global
 		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EA0607C-B6D4-4B34-91D6-431A7D7AE2FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{322687C3-66E8-425A-9A35-42D6914FDE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{322687C3-66E8-425A-9A35-42D6914FDE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{322687C3-66E8-425A-9A35-42D6914FDE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{322687C3-66E8-425A-9A35-42D6914FDE5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

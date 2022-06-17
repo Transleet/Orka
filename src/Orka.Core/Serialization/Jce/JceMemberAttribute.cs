@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Orka.Core.Serialization.Jce
 {
-    internal partial class TestJceStruct
+    public class JceMemberAttribute:Attribute
     {
-        [JceMember(1)] public string Text { get; set; }
+        public JceMemberAttribute(byte tag) => Tag = tag;
+
+        public byte Tag { get; set; }
     }
 }
