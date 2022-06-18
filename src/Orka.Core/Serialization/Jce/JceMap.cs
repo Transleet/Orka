@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Orka.Core.Serialization.Jce
+namespace Orka.Core.Serialization.Jce;
+
+internal class JceMap:Hashtable
 {
-    internal class JceMap:Hashtable
-    {
-    }
 }

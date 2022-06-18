@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Orka.Core.Serialization.Jce
-{
-    public class JceMemberAttribute:Attribute
-    {
-        public JceMemberAttribute(byte tag) => Tag = tag;
+namespace Orka.Core.Serialization.Jce;
 
-        public byte Tag { get; set; }
-    }
+public class JceMemberAttribute:Attribute
+{
+    public JceMemberAttribute(byte tag) => Tag = tag;
+
+    public byte Tag { get; set; }
 }
