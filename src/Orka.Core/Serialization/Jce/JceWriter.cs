@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,20 +66,20 @@ namespace Orka.Core.Serialization.Jce
                     break;
                 case JceType.Map:
                     {
-                        var map = (Hashtable)value;
+                        var map = (JceMap)value;
                         WriteElement(0, map.Count);
-                        foreach (DictionaryEntry dictionaryEntry in map)
+                        foreach (DictionaryEntry entry in map)
                         {
-                            WriteElement(0, dictionaryEntry.Key);
-                            WriteElement(1, dictionaryEntry.Value!);
+                            WriteElement(0, entry.Key);
+                            WriteElement(1, entry.Value!);
                         }
                         break;
                     }
                 case JceType.List:
                     {
-                        var list = (IList)value;
+                        var list = (JceList)value;
                         WriteElement(0, list.Count);
-                        foreach (object o in list)
+                        foreach (object o in list!)
                         {
                             WriteElement(0, o);
                         }
@@ -106,7 +107,7 @@ namespace Orka.Core.Serialization.Jce
             {
 
             }
-            JceType type = JceType.Null;
+            JceType type;
             switch (Type.GetTypeCode(value.GetType()))
             {
                 case TypeCode.Int64:
@@ -161,15 +162,15 @@ namespace Orka.Core.Serialization.Jce
                         type = JceType.SimpleList;
                         break;
                     }
-
-                    if (value is IList)
-                    {
-                        type = JceType.List;
-                        break;
-                    }
-                    if (value is IDictionary)
+                    if (value is JceMap)
                     {
                         type = JceType.Map;
+                        break;
+                    }
+
+                    if (value is JceList)
+                    {
+                        type = JceType.List;
                         break;
                     }
                     throw new Exception();

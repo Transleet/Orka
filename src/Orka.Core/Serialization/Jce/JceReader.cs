@@ -64,8 +64,8 @@ namespace Orka.Core.Serialization.Jce
                     }
                 case JceType.List:
                     {
-                        int length = (int)ReadElement().value;
-                        var list = new List<object>();
+                        int length = Convert.ToInt32(ReadElement().value);
+                        var list = new JceList();
                         while (length > 0)
                         {
                             list.Add(ReadElement().value);
@@ -75,8 +75,8 @@ namespace Orka.Core.Serialization.Jce
                     }
                 case JceType.Map:
                     {
-                        int length = (int)ReadElement().value;
-                        var map = new Hashtable();
+                        int length = Convert.ToInt32(ReadElement().value);
+                        var map = new JceMap();
                         while (length > 0)
                         {
                             map[ReadElement().value] = ReadElement().value;

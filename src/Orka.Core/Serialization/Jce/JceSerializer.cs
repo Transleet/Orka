@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -57,7 +58,7 @@ internal static class JceSerializer
         while (!reader.EndOfStream)
         {
             (int tag, object value) = reader.ReadElement();
-            properties[tag].SetValue(obj,value);
+            properties[tag].SetValue(obj, value);
         }
         return obj;
     }
