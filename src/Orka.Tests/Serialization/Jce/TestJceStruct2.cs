@@ -16,7 +16,7 @@ internal class TestJceStruct2 : IJceStruct
     [JceMember(3)] public JceMap Dict { get; set; }
     [JceMember(4)] public JceList List { get; set; }
 
-    protected bool Equals(TestJceStruct2 other) => Str1 == other.Str1 && Str4 == other.Str4 && Bytes.SequenceEqual(other.Bytes) && Dict.Cast<DictionaryEntry>().Union(other.Dict.Cast<DictionaryEntry>()).Count() == Dict.Count && List.ToArray().SequenceEqual(other.List.ToArray());
+    protected bool Equals(TestJceStruct2 other) => Str1 == other.Str1 && Str4 == other.Str4 && Bytes.SequenceEqual(other.Bytes) && Dict.Union(other.Dict).Count() == Dict.Count && List.ToArray().SequenceEqual(other.List.ToArray());
 
     public override bool Equals(object? obj)
     {

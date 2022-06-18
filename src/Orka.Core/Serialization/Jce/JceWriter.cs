@@ -110,7 +110,7 @@ internal class JceWriter
                     {
                         WriteHead(JceType.Map, tag);
                         WriteElement(0, map.Count);
-                        foreach (DictionaryEntry entry in map)
+                        foreach (KeyValuePair<object,object> entry in map)
                         {
                             WriteElement(0, entry.Key);
                             WriteElement(1, entry.Value!);

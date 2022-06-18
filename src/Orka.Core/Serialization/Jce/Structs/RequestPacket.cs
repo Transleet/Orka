@@ -20,7 +20,8 @@ internal class RequestPacket : IJceStruct
     [JceMember(9)] public JceMap Context { get; set; }
     [JceMember(10)] public JceMap Status { get; set; }
 
-    protected bool Equals(RequestPacket other) => IVersion == other.IVersion && CPacketType == other.CPacketType && IMessageType == other.IMessageType && IRequestId == other.IRequestId && SServantName == other.SServantName && SFuncName == other.SFuncName && SBuffer.SequenceEqual(other.SBuffer) && ITimeout == other.ITimeout && Context.Cast<DictionaryEntry>().Union(other.Context.Cast<DictionaryEntry>()).Count() == Context.Count && Status.Cast<DictionaryEntry>().Union(other.Status.Cast<DictionaryEntry>()).Count() == Status.Count;
+    // for test purpose.
+    protected bool Equals(RequestPacket other) => IVersion == other.IVersion && CPacketType == other.CPacketType && IMessageType == other.IMessageType && IRequestId == other.IRequestId && SServantName == other.SServantName && SFuncName == other.SFuncName && SBuffer.SequenceEqual(other.SBuffer) && ITimeout == other.ITimeout && Context.Union(other.Context).Count() == Context.Count && Status.Union(other.Status).Count() == Status.Count;
 
     public override bool Equals(object? obj)
     {

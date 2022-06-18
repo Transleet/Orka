@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Orka.Core.Serialization.Jce;
 
-internal class JceList:ArrayList
+internal class JceList:JceList<object>
+{
+}
+
+internal class JceList<T> :List<T>
 {
 }
