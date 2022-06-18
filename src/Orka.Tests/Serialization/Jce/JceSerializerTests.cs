@@ -109,4 +109,31 @@ public class JceSerializerTests
         var actual = JceSerializer.Deserialize<RequestPacket>(bytes);
         Assert.Equal(expected, actual);
     }
+    [Fact]
+    public void JceDeserializeTest2()
+    {
+        byte[] bytes =
+        {
+            16, 1, 32, 114, 49, 2, 2, 65, 7, 127, 86, 6, 231, 148, 176, 230, 137, 128, 102, 6, 230, 181, 169, 228,
+            186, 140, 125, 0, 0, 13, 1, 1, 4, 5, 1, 4, 1, 9, 1, 9, 8, 1, 0, 129, 3, 42, 152, 0, 2, 6, 4, 49, 57, 49,
+            57, 22, 3, 56, 49, 48, 6, 3, 49, 49, 52, 22, 3, 53, 49, 52, 168, 0, 2, 6, 6, 231, 148, 176, 230, 137,
+            128, 22, 6, 230, 181, 169, 228, 186, 140, 6, 6, 233, 135, 142, 229, 133, 189, 22, 6, 229, 137, 141, 232,
+            190, 136
+        };
+        var expected = new RequestPacket
+        {
+            IVersion = 1,
+            CPacketType = 114,
+            IMessageType = 514,
+            IRequestId = 1919,
+            SServantName = "田所",
+            SFuncName = "浩二",
+            SBuffer = new byte[] { 1, 1, 4, 5, 1, 4, 1, 9, 1, 9, 8, 1, 0 },
+            ITimeout = 810,
+            Context = new JceMap { { "114", "514" }, { "1919", "810" } },
+            Status = new JceMap { { "野兽", "前辈" }, { "田所", "浩二" } }
+        };
+        var actual = JceSerializer.Deserialize<RequestPacket>(bytes);
+        Assert.Equal(expected, actual);
+    }
 }
