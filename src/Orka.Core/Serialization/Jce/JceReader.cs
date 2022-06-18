@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -33,34 +35,39 @@ internal class JceReader
         return head;
     }
 
-    public object ReadBody(JceType type)
+    public (int tag, object value) ReadElement(Type? expectedType = null)
     {
-        switch (type)
+        var head = ReadHead();
+        switch (head.Type)
         {
             case JceType.Int8:
                 byte b = (byte)_stream.ReadByte();
-                return Unsafe.As<byte, sbyte>(ref b);
+                return (head.Tag, Unsafe.As<byte, sbyte>(ref b));
             case JceType.Int16:
-                return Number.ToInt16(_stream.ReadBytes(2));
+                return (head.Tag, Number.ToInt16(_stream.ReadBytes(2)));
             case JceType.Int32:
-                return Number.ToInt32(_stream.ReadBytes(4));
+                return (head.Tag, Number.ToInt32(_stream.ReadBytes(4)));
             case JceType.Int64:
-                return Number.ToInt64(_stream.ReadBytes(8));
+                return (head.Tag, Number.ToInt64(_stream.ReadBytes(8)));
+            case JceType.Float:
+                return (head.Tag, Number.ToSingle(_stream.ReadBytes(4)));
+            case JceType.Double:
+                return (head.Tag, Number.ToDouble(_stream.ReadBytes(8)));
             case JceType.String1:
                 {
                     int length = _stream.ReadByte();
-                    return length > 0 ? Encoding.UTF8.GetString(_stream.ReadBytes(length)) : string.Empty;
+                    return (head.Tag, length > 0 ? Encoding.UTF8.GetString(_stream.ReadBytes(length)) : string.Empty);
                 }
             case JceType.String4:
                 {
                     int length = (int)Number.ToUInt32(_stream.ReadBytes(4));
-                    return length > 0 ? Encoding.UTF8.GetString(_stream.ReadBytes(length)) : string.Empty;
+                    return (head.Tag, length > 0 ? Encoding.UTF8.GetString(_stream.ReadBytes(length)) : string.Empty);
                 }
             case JceType.SimpleList:
                 {
                     ReadHead();
                     int length = Convert.ToInt32(ReadElement().value);
-                    return length > 0 ? _stream.ReadBytes(length) : Array.Empty<byte>();
+                    return (head.Tag, length > 0 ? _stream.ReadBytes(length) : Array.Empty<byte>());
                 }
             case JceType.List:
                 {
@@ -71,7 +78,7 @@ internal class JceReader
                         list.Add(ReadElement().value);
                         --length;
                     }
-                    return list;
+                    return (head.Tag, list);
                 }
             case JceType.Map:
                 {
@@ -82,30 +89,26 @@ internal class JceReader
                         map[ReadElement().value] = ReadElement().value;
                         --length;
                     }
-                    return map;
+                    return (head.Tag, map);
                 }
             case JceType.StructBegin:
-                return ReadStruct();
+                Debug.Assert(expectedType != null);
+                object jceStruct = Activator.CreateInstance(expectedType)!;
+                var properties = JceHelpers.GetTagsAndProperties(expectedType);
+                foreach (KeyValuePair<int, PropertyInfo> propertyInfo in properties)
+                {
+                    var item = ReadElement(propertyInfo.Value.PropertyType);
+                    if (item.tag != propertyInfo.Key)
+                    {
+                        continue;
+                    }
+                    propertyInfo.Value.SetValue(jceStruct, item.value);
+                }
+                return (head.Tag,jceStruct);
             case JceType.StructEnd:
-                return null;
-            case JceType.Float:
-                return Number.ToSingle(_stream.ReadBytes(4));
-            case JceType.Double:
-                return Number.ToDouble(_stream.ReadBytes(8));
+                return (head.Tag, new object());
             default:
                 throw new InvalidEnumArgumentException();
         }
-    }
-
-    public IJceStruct ReadStruct()
-    {
-        return null;
-    }
-
-    public (int tag, object value) ReadElement()
-    {
-        var head = ReadHead();
-        var value = ReadBody(head.Type);
-        return (head.Tag, value);
     }
 }

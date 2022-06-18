@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace Orka.Core.Serialization.Jce.Structs;
 
-internal class RequestPacket:IJceStruct
+internal class RequestPacket : IJceStruct
 {
-    [JceMember(1)]public short IVersion { get; set; }
-    [JceMember(2)]public sbyte CPacketType { get; set; }
-    [JceMember(3)]public int IMessageType { get; set; }
-    [JceMember(4)]public int IRequestId { get; set; }
-    [JceMember(5)]public string SServantName { get; set; }
-    [JceMember(6)]public string SFuncName { get; set; }
-    [JceMember(7)]public byte[] SBuffer { get; set; }
-    [JceMember(8)]public int ITimeout { get; set; }
-    [JceMember(9)]public JceMap Context { get; set; }
-    [JceMember(10)]public JceMap Status { get; set; }
+    [JceMember(1)] public short IVersion { get; set; }
+    [JceMember(2)] public sbyte CPacketType { get; set; }
+    [JceMember(3)] public int IMessageType { get; set; }
+    [JceMember(4)] public int IRequestId { get; set; }
+    [JceMember(5)] public string SServantName { get; set; }
+    [JceMember(6)] public string SFuncName { get; set; }
+    [JceMember(7)] public byte[] SBuffer { get; set; }
+    [JceMember(8)] public int ITimeout { get; set; }
+    [JceMember(9)] public JceMap Context { get; set; }
+    [JceMember(10)] public JceMap Status { get; set; }
 
-    protected bool Equals(RequestPacket other) => IVersion == other.IVersion && CPacketType == other.CPacketType && IMessageType == other.IMessageType && IRequestId == other.IRequestId && SServantName == other.SServantName && SFuncName == other.SFuncName && SBuffer.SequenceEqual(other.SBuffer) && ITimeout == other.ITimeout && Context.Cast<DictionaryEntry>().Union(other.Context.Cast<DictionaryEntry>()).Count()==Context.Count && Status.Cast<DictionaryEntry>().Union(other.Status.Cast<DictionaryEntry>()).Count()==Status.Count;
+    protected bool Equals(RequestPacket other) => IVersion == other.IVersion && CPacketType == other.CPacketType && IMessageType == other.IMessageType && IRequestId == other.IRequestId && SServantName == other.SServantName && SFuncName == other.SFuncName && SBuffer.SequenceEqual(other.SBuffer) && ITimeout == other.ITimeout && Context.Cast<DictionaryEntry>().Union(other.Context.Cast<DictionaryEntry>()).Count() == Context.Count && Status.Cast<DictionaryEntry>().Union(other.Status.Cast<DictionaryEntry>()).Count() == Status.Count;
 
     public override bool Equals(object? obj)
     {
