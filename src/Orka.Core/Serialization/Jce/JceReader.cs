@@ -104,7 +104,7 @@ internal class JceReader
                     }
                     propertyInfo.Value.SetValue(jceStruct, item.value);
                 }
-                return (head.Tag,jceStruct);
+                return (head.Tag, jceStruct);
             case JceType.StructEnd:
                 return (head.Tag, new object());
             default:

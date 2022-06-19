@@ -8,7 +8,7 @@ namespace Orka.Core.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection TyrAddOrkaClient(this IServiceCollection services,Action<OrkaClientOptions>? options=null)
+    public static IServiceCollection TyrAddOrkaClient(this IServiceCollection services, Action<OrkaClientOptions>? options = null)
     {
         if (options is not null)
         {
@@ -21,5 +21,5 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    
+
 }

@@ -2,7 +2,7 @@
 
 namespace Orka.Sample;
 
-public class EchoBot:IOrkaBot
+public class EchoBot : IOrkaBot
 {
 
 }

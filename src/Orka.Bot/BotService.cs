@@ -9,7 +9,7 @@ internal class BotService<T> : BackgroundService where T : IOrkaBot
     private readonly IOrkaClient _client;
     private readonly ILogger<T> _logger;
     private readonly T _bot;
-        
+
 
     public BotService(ILogger<T> logger, T bot, IOrkaClient client)
     {

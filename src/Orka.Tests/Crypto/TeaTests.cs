@@ -40,7 +40,7 @@ public class TeaTests
         Assert.Equal(expected, dec);
     }
 
-        
+
 
     [Fact]
     public void TeaTest4()
@@ -49,7 +49,7 @@ public class TeaTests
         byte[] expected = Random.Shared.GetRandomBytes();
         var tea = new Tea(key);
         byte[] enc = tea.Encrypt(expected);
-        byte[] dec = MockTea.Decrypt(enc,key);
+        byte[] dec = MockTea.Decrypt(enc, key);
         Assert.Equal(expected, dec);
     }
 }

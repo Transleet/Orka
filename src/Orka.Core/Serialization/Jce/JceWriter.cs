@@ -110,7 +110,7 @@ internal class JceWriter
                     {
                         WriteHead(JceType.Map, tag);
                         WriteElement(0, map.Count);
-                        foreach (KeyValuePair<object,object> entry in map)
+                        foreach (KeyValuePair<object, object> entry in map)
                         {
                             WriteElement(0, entry.Key);
                             WriteElement(1, entry.Value!);
@@ -130,13 +130,13 @@ internal class JceWriter
                     }
                     if (value is IJceStruct jceStruct)
                     {
-                        WriteHead(JceType.StructBegin,tag);
+                        WriteHead(JceType.StructBegin, tag);
                         var properties = JceHelpers.GetTagsAndProperties(jceStruct.GetType());
                         foreach (KeyValuePair<int, PropertyInfo> keyValuePair in properties)
                         {
                             WriteElement(keyValuePair.Key, keyValuePair.Value.GetValue(value)!);
                         }
-                        WriteHead(JceType.StructEnd,0);
+                        WriteHead(JceType.StructEnd, 0);
                         break;
                     }
                 }

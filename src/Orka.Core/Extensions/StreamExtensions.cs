@@ -9,7 +9,7 @@ namespace Orka.Core.Extensions;
 
 internal static class StreamExtensions
 {
-    public static byte[] ReadBytes(this Stream stream,int length)
+    public static byte[] ReadBytes(this Stream stream, int length)
     {
         var arr = GC.AllocateUninitializedArray<byte>(length);
         stream.Read(arr);

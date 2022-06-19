@@ -22,7 +22,7 @@ internal class Tea
         int fill = 10 - (length + 1) % 8;
         byte[] dst = new byte[fill + length + 7];
         dst[0] = (byte)((fill - 3) | 0xF8);
-        src.CopyTo(dst,fill);
+        src.CopyTo(dst, fill);
         ulong iv1 = 0, iv2 = 0;
         for (int i = 0; i < dst.Length; i += 8)
         {
@@ -31,7 +31,7 @@ internal class Tea
             iv1 = Encode(holder);
             iv1 ^= iv2;
             iv2 = holder;
-            Number.FromUInt64(iv1).CopyTo(dst,i);
+            Number.FromUInt64(iv1).CopyTo(dst, i);
         }
         return dst;
     }

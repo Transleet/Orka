@@ -6,7 +6,7 @@ public readonly struct Uin
     public Uin(long value) => _value = value;
     public Uin(string value) => _value = long.Parse(value);
 
-    
+
     public static implicit operator long(Uin value) => value._value;
     public static implicit operator uint(Uin value) => (uint)value._value;
     public static implicit operator int(Uin value) => (int)value._value;

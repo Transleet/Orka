@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Orka.Core.Serialization.Jce;
 
-public class JceMemberAttribute:Attribute
+public class JceMemberAttribute : Attribute
 {
     public JceMemberAttribute(byte tag) => Tag = tag;
 
