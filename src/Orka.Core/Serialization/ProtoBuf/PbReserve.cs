@@ -66,10 +66,10 @@ internal class Generalflags  {
         [ProtoMember(4)] public  int  TitleId { get; set; }
         [ProtoMember(5)] public  int  RobotMsgFlag { get; set; }
         [ProtoMember(6)] public  long  WantGiftSenderUin { get; set; }
-        [ProtoMember(7)] public  Float  StickerX { get; set; }
-        [ProtoMember(8)] public  Float  StickerY { get; set; }
-        [ProtoMember(9)] public  Float  StickerWidth { get; set; }
-        [ProtoMember(10)] public  Float  StickerHeight { get; set; }
+        [ProtoMember(7)] public  float  StickerX { get; set; }
+        [ProtoMember(8)] public  float  StickerY { get; set; }
+        [ProtoMember(9)] public  float  StickerWidth { get; set; }
+        [ProtoMember(10)] public  float  StickerHeight { get; set; }
         [ProtoMember(11)] public  int  StickerRotate { get; set; }
         [ProtoMember(12)] public  long  StickerHostMsgseq { get; set; }
         [ProtoMember(13)] public  long  StickerHostMsguid { get; set; }
@@ -157,9 +157,9 @@ internal class ResvAttrForGiftMsg  {
 internal class SourceMsg  {
     [ProtoContract]
     internal class ResvAttr{
-        [ProtoMember(1)] public  ByteArray?  RichMsg2 { get; set; }
-        [ProtoMember(2)] public  Int?  OriMsgtype { get; set; }
-        [ProtoMember(3)] public  List<Long>?  OrigUids { get; set; }
+        [ProtoMember(1)] public byte[]?  RichMsg2 { get; set; }
+        [ProtoMember(2)] public  int?  OriMsgtype { get; set; }
+        [ProtoMember(3)] public  List<long>?  OrigUids { get; set; }
     } 
 }
 

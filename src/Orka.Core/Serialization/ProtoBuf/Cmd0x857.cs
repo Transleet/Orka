@@ -220,7 +220,7 @@ internal class TroopTips0x857
         [ProtoMember(6)] public byte[] GrayTips { get; set; }
         [ProtoMember(7)] public long MsgSeq { get; set; }
         [ProtoMember(8)] public int JoinNums { get; set; }
-        [ProtoMember(9)] public SubMsgType0x11f.PersonalSetting? MsgPerSetting { get; set; }
+        [ProtoMember(9)] public PersonalSetting? MsgPerSetting { get; set; }
         [ProtoMember(10)] public int PlayMode { get; set; }
         [ProtoMember(11)] public bool IsJoinWhenStart { get; set; }
         [ProtoMember(99)] public int MediaType { get; set; }

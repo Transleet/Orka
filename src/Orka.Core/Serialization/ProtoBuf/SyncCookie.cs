@@ -5,21 +5,17 @@ namespace Orka.Core.Serialization.ProtoBuf
 {
     [ProtoContract]
     internal class SyncCookie{
-        [ProtoMember(1)] public  Long?  Time1 { get; set; }
+        [ProtoMember(1)] public  long?  Time1 { get; set; }
         [ProtoMember(2)] public  long Time { get; set; }
         [ProtoMember(3)] public  long  Unknown1 { get; set; }
         [ProtoMember(4)] public  long  Unknown2 { get; set; }
         [ProtoMember(5)] public  long  Const1 { get; set; }
         [ProtoMember(11)] public  long  Const2 { get; set; }
         [ProtoMember(12)] public  long  Unknown3 { get; set; }
-        [ProtoMember(13)] public  Long?  LastSyncTime { get; set; }
+        [ProtoMember(13)] public  long?  LastSyncTime { get; set; }
         [ProtoMember(14)] public  long  Unknown4 { get; set; }
     }
 } 
-
-private val const1_: long = Random.nextLong().absoluteValue
-private val const2_: long = Random.nextLong().absoluteValue
-
 
 /*
 

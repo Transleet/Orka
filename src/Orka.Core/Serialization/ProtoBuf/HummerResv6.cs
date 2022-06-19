@@ -19,5 +19,5 @@ internal class NotOnlineImageExtPb  {
         [ProtoMember(13)] public  string  EmojiIconUrl { get; set; }
         [ProtoMember(14)] public  string  EmojiMarketFaceName { get; set; }
         [ProtoMember(15)] public  int  Source { get; set; }
-    } , ImgExtPbResvAttrCommon
+    }
 }

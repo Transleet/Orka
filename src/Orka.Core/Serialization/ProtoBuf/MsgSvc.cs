@@ -344,7 +344,7 @@ internal class MsgSvc
         [ProtoMember(9)] public int DataStatist { get; set; }
         [ProtoMember(10)] public MultiMsgAssist? MultiMsgAssist { get; set; }
         [ProtoMember(11)] public PbInputNotifyInfo? InputNotifyInfo { get; set; }
-        [ProtoMember(12)] public MsgCtrl.MsgCtrl? MsgCtrl { get; set; }
+        [ProtoMember(12)] public MsgCtrl? MsgCtrl { get; set; }
         [ProtoMember(13)] public ImReceipt.ReceiptReq? ReceiptReq { get; set; }
         [ProtoMember(14)] public int MultiSendSeq { get; set; }
     }

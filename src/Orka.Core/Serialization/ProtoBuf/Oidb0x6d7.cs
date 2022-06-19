@@ -17,7 +17,7 @@ internal class Oidb0x6d7  {
         [ProtoMember(2)] public  string  RetMsg { get; set; }
         [ProtoMember(3)] public  string  ClientWording { get; set; }
         [ProtoMember(4)] public  GroupFileCommon.FolderInfo?  FolderInfo { get; set; }
-    } , CheckableStruct
+    } 
 
     [ProtoContract]
     internal class DeleteFolderReqBody{
@@ -27,7 +27,7 @@ internal class Oidb0x6d7  {
     } 
 
     [ProtoContract]
-    internal class DeleteFolderRspBody:CheckableStruct
+    internal class DeleteFolderRspBody
     {
         [ProtoMember(1)] public  int  Int32RetCode { get; set; }
         [ProtoMember(2)] public  string  RetMsg { get; set; }
@@ -49,7 +49,7 @@ internal class Oidb0x6d7  {
         [ProtoMember(2)] public  string  RetMsg { get; set; }
         [ProtoMember(3)] public  string  ClientWording { get; set; }
         [ProtoMember(4)] public  GroupFileCommon.FolderInfo?  FolderInfo { get; set; }
-    } , CheckableStruct
+    } 
 
     [ProtoContract]
     internal class RenameFolderReqBody{
@@ -65,7 +65,7 @@ internal class Oidb0x6d7  {
         [ProtoMember(2)] public  string  RetMsg { get; set; }
         [ProtoMember(3)] public  string  ClientWording { get; set; }
         [ProtoMember(4)] public  GroupFileCommon.FolderInfo?  FolderInfo { get; set; }
-    } , CheckableStruct
+    } 
 
     [ProtoContract]
     internal class ReqBody{

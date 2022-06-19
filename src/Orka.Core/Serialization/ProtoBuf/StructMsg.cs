@@ -300,11 +300,11 @@ internal class Youtu  {
         [ProtoMember(1)] public  int  Errorcode { get; set; }
         [ProtoMember(2)] public  string  Errormsg { get; set; }
         [ProtoMember(3)] public  string  Uin { get; set; }
-        [ProtoMember(4)] public  Float  UinConfidence { get; set; }
+        [ProtoMember(4)] public  float  UinConfidence { get; set; }
         [ProtoMember(5)] public  string  Phone { get; set; }
-        [ProtoMember(6)] public  Float  PhoneConfidence { get; set; }
+        [ProtoMember(6)] public  float  PhoneConfidence { get; set; }
         [ProtoMember(7)] public  string  Name { get; set; }
-        [ProtoMember(8)] public  Float  NameConfidence { get; set; }
+        [ProtoMember(8)] public  float  NameConfidence { get; set; }
         [ProtoMember(9)] public  byte[]  Image { get; set; }
         [ProtoMember(10)] public  string  SessionId { get; set; }
     } 

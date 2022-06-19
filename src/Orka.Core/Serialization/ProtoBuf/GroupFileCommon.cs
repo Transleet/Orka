@@ -12,7 +12,7 @@ internal class GroupFileCommon  {
         [ProtoMember(3)] public  int  MsgRandom { get; set; }
         [ProtoMember(4)] public  byte[]  Ext { get; set; }
         [ProtoMember(5)] public  int  FeedFlag { get; set; }
-        [ProtoMember(6)] public  MsgCtrl.MsgCtrl?  MsgCtrl { get; set; }
+        [ProtoMember(6)] public  MsgCtrl?  MsgCtrl { get; set; }
     } 
 
     [ProtoContract]

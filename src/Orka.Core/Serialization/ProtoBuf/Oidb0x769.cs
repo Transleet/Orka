@@ -31,7 +31,7 @@ internal class Oidb0x769  {
     internal class Content{
         [ProtoMember(1)] public  int  TaskId { get; set; }
         [ProtoMember(2)] public  int  Compress { get; set; }
-        [ProtoMember(10)] public  byte[]  Content { get; set; }
+        [ProtoMember(10)] public  byte[]  Content1 { get; set; }
     } 
 
     [ProtoContract]

@@ -127,7 +127,7 @@ internal class OidbCmd0xb77  {
         [ProtoMember(4)] public  int  Level { get; set; }
         [ProtoMember(5)] public  int  SubLevel { get; set; }
         [ProtoMember(6)] public  string  DevelopMsg { get; set; }
-    } , Packet
+    } 
 
     [ProtoContract]
     internal class TemplateItem{
