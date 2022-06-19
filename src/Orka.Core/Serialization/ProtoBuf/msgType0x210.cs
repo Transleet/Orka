@@ -18,33 +18,30 @@ internal class MsgType0x210
 
     internal class Submsgtype0x101
     {
-        internal class SubMsgType0x27
+        [ProtoContract]
+        internal class ClientReport
         {
-            [ProtoContract]
-            internal class ClientReport
-            {
-                [ProtoMember(1)] public int ServiceId { get; set; }
-                [ProtoMember(2)] public string ContentId { get; set; }
-            }
+            [ProtoMember(1)] public int ServiceId { get; set; }
+            [ProtoMember(2)] public string ContentId { get; set; }
+        }
 
-            [ProtoContract]
-            internal class MsgBody
-            {
-                [ProtoMember(1)] public PushPlatform? MsgPushPlatform { get; set; }
-                [ProtoMember(2)] public ClientReport? MsgClientReport { get; set; }
-            }
+        [ProtoContract]
+        internal class MsgBody
+        {
+            [ProtoMember(1)] public PushPlatform? MsgPushPlatform { get; set; }
+            [ProtoMember(2)] public ClientReport? MsgClientReport { get; set; }
+        }
 
-            [ProtoContract]
-            internal class PushPlatform
-            {
-                [ProtoMember(1)] public long FromUin { get; set; }
-                [ProtoMember(2)] public string Title { get; set; }
-                [ProtoMember(3)] public string Desc { get; set; }
-                [ProtoMember(4)] public string TargetUrl { get; set; }
-                [ProtoMember(5)] public int ForwardType { get; set; }
-                [ProtoMember(6)] public string ExtDataString { get; set; }
-                [ProtoMember(7)] public byte[] ExtData { get; set; }
-            }
+        [ProtoContract]
+        internal class PushPlatform
+        {
+            [ProtoMember(1)] public long FromUin { get; set; }
+            [ProtoMember(2)] public string Title { get; set; }
+            [ProtoMember(3)] public string Desc { get; set; }
+            [ProtoMember(4)] public string TargetUrl { get; set; }
+            [ProtoMember(5)] public int ForwardType { get; set; }
+            [ProtoMember(6)] public string ExtDataString { get; set; }
+            [ProtoMember(7)] public byte[] ExtData { get; set; }
         }
     }
 
