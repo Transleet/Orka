@@ -39,276 +39,278 @@ internal class Submsgtype0x101 {
     }
 }
 
+internal class Submsgtype0x102
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public string AdId { get; set; }
+    }
+}
+internal class Submsgtype0x103
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public long From { get; set; }
+        [ProtoMember(2)] public long To { get; set; }
+        [ProtoMember(3)] public int TopicId { get; set; }
+        [ProtoMember(11)] public int CurCount { get; set; }
+        [ProtoMember(12)] public int TotalCount { get; set; }
+    }
+}
 
-internal class Submsgtype0x102 {
-    internal class Submsgtype0x102  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  string  AdId { get; set; }
-        } 
+internal class Submsgtype0x104
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public long From { get; set; }
+        [ProtoMember(2)] public long To { get; set; }
+        [ProtoMember(3)] public int TopicId { get; set; }
+        [ProtoMember(11)] public byte[] Wording { get; set; }
+    }
+}
+
+internal class SubMsgType0x108
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public int Type { get; set; }
+        [ProtoMember(2)] public long PushUin { get; set; }
+        [ProtoMember(3)] public int LikeCount { get; set; }
+        [ProtoMember(4)] public int PushTime { get; set; }
+    }
+}
+
+internal class Submsgtype0x10f
+{
+    [ProtoContract]
+    internal class KanDianCoinSettingWording
+    {
+        [ProtoMember(1)] public byte[] Wording { get; set; }
+        [ProtoMember(2)] public byte[] PictureUrl { get; set; }
+    }
+
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public int IsOpenCoinEntry { get; set; }
+        [ProtoMember(2)] public int CanGetCoinCount { get; set; }
+        [ProtoMember(3)] public byte[] CoinIconUrl { get; set; }
+        [ProtoMember(4)] public KanDianCoinSettingWording? MsgSettingWording { get; set; }
+        [ProtoMember(5)] public long LastCompletedTaskStamp { get; set; }
+        [ProtoMember(6)] public long DstUin { get; set; }
     }
 }
 
 
-internal class Submsgtype0x103 {
-    internal class Submsgtype0x103  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  long  From { get; set; }
-            [ProtoMember(2)] public  long  To { get; set; }
-            [ProtoMember(3)] public  int  TopicId { get; set; }
-            [ProtoMember(11)] public  int  CurCount { get; set; }
-            [ProtoMember(12)] public  int  TotalCount { get; set; }
-        } 
+internal class SubMsgType0x111
+{
+    [ProtoContract]
+    internal class AddFriendSource
+    {
+        [ProtoMember(1)] public int Source { get; set; }
+        [ProtoMember(2)] public int SubSource { get; set; }
+    }
+
+    [ProtoContract]
+    internal class Color
+    {
+        [ProtoMember(1)] public int R { get; set; }
+        [ProtoMember(2)] public int G { get; set; }
+        [ProtoMember(3)] public int B { get; set; }
+    }
+
+    [ProtoContract]
+    internal class Label
+    {
+        [ProtoMember(1)] public byte[] Name { get; set; }
+        [ProtoMember(2)] public Color? TextColor { get; set; }
+        [ProtoMember(3)] public Color? EdgingColor { get; set; }
+        [ProtoMember(4)] public int LabelType { get; set; }
+    }
+
+    [ProtoContract]
+    internal class MayKnowPerson
+    {
+        [ProtoMember(1)] public long Uin { get; set; }
+        [ProtoMember(2)] public AddFriendSource? MsgIosSource { get; set; }
+        [ProtoMember(3)] public AddFriendSource? MsgAndroidSource { get; set; }
+        [ProtoMember(4)] public byte[] Reason { get; set; }
+        [ProtoMember(5)] public byte[] Additive { get; set; }
+        [ProtoMember(6)] public byte[] Nick { get; set; }
+        [ProtoMember(7)] public byte[] Remark { get; set; }
+        [ProtoMember(8)] public byte[] Country { get; set; }
+        [ProtoMember(9)] public byte[] Province { get; set; }
+        [ProtoMember(10)] public byte[] City { get; set; }
+        [ProtoMember(11)] public int Age { get; set; }
+        [ProtoMember(12)] public byte[] Catelogue { get; set; }
+        [ProtoMember(13)] public byte[] Alghrithm { get; set; }
+        [ProtoMember(14)] public byte[] Richbuffer { get; set; }
+        [ProtoMember(15)] public int Qzone { get; set; }
+        [ProtoMember(16)] public int Gender { get; set; }
+        [ProtoMember(17)] public byte[] MobileName { get; set; }
+        [ProtoMember(18)] public string Token { get; set; }
+        [ProtoMember(19)] public List<Label> MsgLabels { get; set; }
+    }
+
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public long Type { get; set; }
+        [ProtoMember(2)] public List<MayKnowPerson> MsgAddRecommendPersons { get; set; }
+        [ProtoMember(3)] public List<long> Uint64DelUins { get; set; }
     }
 }
 
 
-internal class Submsgtype0x104 {
-    internal class Submsgtype0x104  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  long  From { get; set; }
-            [ProtoMember(2)] public  long  To { get; set; }
-            [ProtoMember(3)] public  int  TopicId { get; set; }
-            [ProtoMember(11)] public  byte[]  Wording { get; set; }
-        } 
+internal class SubMsgType0x113
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public int Int32AppId { get; set; }
+        [ProtoMember(2)] public int Int32TaskId { get; set; }
+        [ProtoMember(3)] public int EnumTaskOp { get; set; }
     }
 }
 
 
-internal class Submsgtype0x108 {
-    internal class SubMsgType0x108  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  int  Type { get; set; }
-            [ProtoMember(2)] public  long  PushUin { get; set; }
-            [ProtoMember(3)] public  int  LikeCount { get; set; }
-            [ProtoMember(4)] public  int  PushTime { get; set; }
-        } 
+internal class SubMsgType0x115
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public long FromUin { get; set; }
+        [ProtoMember(2)] public long ToUin { get; set; }
+        [ProtoMember(3)] public NotifyItem? MsgNotifyItem { get; set; }
+        [ProtoMember(4)] public byte[] PbReserve { get; set; }
+    }
+
+    [ProtoContract]
+    internal class NotifyItem
+    {
+        [ProtoMember(1)] public int Ime { get; set; }
+        [ProtoMember(2)] public int Timeout { get; set; }
+        [ProtoMember(3)] public long Timestamp { get; set; }
+        [ProtoMember(4)] public int EventType { get; set; }
+        [ProtoMember(5)] public int Interval { get; set; }
+        [ProtoMember(6)] public byte[] Wording { get; set; }
+    }
+}
+
+internal class Submsgtype0x116
+{
+    [ProtoContract]
+    internal class MemberInfo
+    {
+        [ProtoMember(1)] public long MemberUin { get; set; }
+        [ProtoMember(2)] public int InviteTimestamp { get; set; }
+        [ProtoMember(3)] public int TerminalType { get; set; }
+        [ProtoMember(4)] public int ClientVersion { get; set; }
+    }
+
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public List<MemberInfo> MsgMemberJoin { get; set; }
+        [ProtoMember(2)] public List<MemberInfo> MsgMemberQuit { get; set; }
+        [ProtoMember(3)] public int GroupId { get; set; }
+        [ProtoMember(4)] public int RoomId { get; set; }
+        [ProtoMember(5)] public int InviteListTotalCount { get; set; }
+        [ProtoMember(6)] public int EnumEventType { get; set; }
     }
 }
 
 
-internal class Submsgtype0x10f {
-    internal class Submsgtype0x10f  {
-        [ProtoContract]
-        internal class KanDianCoinSettingWording{
-            [ProtoMember(1)] public  byte[]  Wording { get; set; }
-            [ProtoMember(2)] public  byte[]  PictureUrl { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  int  IsOpenCoinEntry { get; set; }
-            [ProtoMember(2)] public  int  CanGetCoinCount { get; set; }
-            [ProtoMember(3)] public  byte[]  CoinIconUrl { get; set; }
-            [ProtoMember(4)] public  KanDianCoinSettingWording?  MsgSettingWording { get; set; }
-            [ProtoMember(5)] public  long  LastCompletedTaskStamp { get; set; }
-            [ProtoMember(6)] public  long  DstUin { get; set; }
-        } 
+internal class Submsgtype0x117
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public long Uin { get; set; }
+        [ProtoMember(2)] public List<int> Uint32MoudleId { get; set; }
     }
 }
 
 
-internal class Submsgtype0x111 {
-    internal class SubMsgType0x111  {
-        [ProtoContract]
-        internal class AddFriendSource{
-            [ProtoMember(1)] public  int  Source { get; set; }
-            [ProtoMember(2)] public  int  SubSource { get; set; }
-        } 
+internal class Submsgtype0x118
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public int PushType { get; set; }
+        [ProtoMember(2)] public byte[] PushData { get; set; }
+        [ProtoMember(3)] public int Timestamp { get; set; }
+        [ProtoMember(4)] public SystemNotify? MsgSystemNotify { get; set; }
+    }
 
-        [ProtoContract]
-        internal class Color{
-            [ProtoMember(1)] public  int  R { get; set; }
-            [ProtoMember(2)] public  int  G { get; set; }
-            [ProtoMember(3)] public  int  B { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class Label{
-            [ProtoMember(1)] public  byte[]  Name { get; set; }
-            [ProtoMember(2)] public  Color?  TextColor { get; set; }
-            [ProtoMember(3)] public  Color?  EdgingColor { get; set; }
-            [ProtoMember(4)] public  int  LabelType { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class MayKnowPerson{
-            [ProtoMember(1)] public  long  Uin { get; set; }
-            [ProtoMember(2)] public  AddFriendSource?  MsgIosSource { get; set; }
-            [ProtoMember(3)] public  AddFriendSource?  MsgAndroidSource { get; set; }
-            [ProtoMember(4)] public  byte[]  Reason { get; set; }
-            [ProtoMember(5)] public  byte[]  Additive { get; set; }
-            [ProtoMember(6)] public  byte[]  Nick { get; set; }
-            [ProtoMember(7)] public  byte[]  Remark { get; set; }
-            [ProtoMember(8)] public  byte[]  Country { get; set; }
-            [ProtoMember(9)] public  byte[]  Province { get; set; }
-            [ProtoMember(10)] public  byte[]  City { get; set; }
-            [ProtoMember(11)] public  int  Age { get; set; }
-            [ProtoMember(12)] public  byte[]  Catelogue { get; set; }
-            [ProtoMember(13)] public  byte[]  Alghrithm { get; set; }
-            [ProtoMember(14)] public  byte[]  Richbuffer { get; set; }
-            [ProtoMember(15)] public  int  Qzone { get; set; }
-            [ProtoMember(16)] public  int  Gender { get; set; }
-            [ProtoMember(17)] public  byte[]  MobileName { get; set; }
-            [ProtoMember(18)] public  string  Token { get; set; }
-            [ProtoMember(19)] public  List<Label>  MsgLabels { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  long  Type { get; set; }
-            [ProtoMember(2)] public  List<MayKnowPerson>  MsgAddRecommendPersons { get; set; }
-            [ProtoMember(3)] public  List<Long>  Uint64DelUins { get; set; }
-        } 
+    [ProtoContract]
+    internal class SystemNotify
+    {
+        [ProtoMember(1)] public byte[] MsgSummary { get; set; }
+        [ProtoMember(2)] public int FilterFlag { get; set; }
+        [ProtoMember(3)] public byte[] ExtendContent { get; set; }
+        [ProtoMember(4)] public int IgnorePcActive { get; set; }
+        [ProtoMember(5)] public int FilterVersion { get; set; }
+        [ProtoMember(6)] public int CountFlag { get; set; }
+        [ProtoMember(7)] public int FilterVersionUpperlimitFlag { get; set; }
+        [ProtoMember(8)] public int FilterVersionUpperlimit { get; set; }
+        [ProtoMember(9)] public byte[] CustomSound { get; set; }
+        [ProtoMember(10)] public int AdmnFlag { get; set; }
+        [ProtoMember(11)] public int IgnoreWithoutContent { get; set; }
+        [ProtoMember(12)] public byte[] MsgTitle { get; set; }
     }
 }
 
 
-internal class Submsgtype0x113 {
-    internal class SubMsgType0x113  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  int  Int32AppId { get; set; }
-            [ProtoMember(2)] public  int  Int32TaskId { get; set; }
-            [ProtoMember(3)] public  int  EnumTaskOp { get; set; }
-        } 
+internal class SubMsgType0x119
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public long WriterUin { get; set; }
+        [ProtoMember(2)] public long CreatorUin { get; set; }
+        [ProtoMember(3)] public byte[] RichContent { get; set; }
+        [ProtoMember(4)] public byte[] OptBytesUrl { get; set; }
+        [ProtoMember(5)] public byte[] CreatorNick { get; set; }
     }
 }
 
 
-internal class Submsgtype0x115 {
-    internal class SubMsgType0x115  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  long  FromUin { get; set; }
-            [ProtoMember(2)] public  long  ToUin { get; set; }
-            [ProtoMember(3)] public  NotifyItem?  MsgNotifyItem { get; set; }
-            [ProtoMember(4)] public  byte[]  PbReserve { get; set; }
-        } 
+internal class Submsgtype0x11a
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public int EnumResult { get; set; }
+        [ProtoMember(2)] public byte[] Token { get; set; }
+        [ProtoMember(3)] public byte[] EncryptKey { get; set; }
+        [ProtoMember(4)] public UserData? MsgUserData { get; set; }
+        [ProtoMember(5)] public int EnumBizType { get; set; }
+    }
 
-        [ProtoContract]
-        internal class NotifyItem{
-            [ProtoMember(1)] public  int  Ime { get; set; }
-            [ProtoMember(2)] public  int  Timeout { get; set; }
-            [ProtoMember(3)] public  long  Timestamp { get; set; }
-            [ProtoMember(4)] public  int  EventType { get; set; }
-            [ProtoMember(5)] public  int  Interval { get; set; }
-            [ProtoMember(6)] public  byte[]  Wording { get; set; }
-        } 
+    [ProtoContract]
+    internal class UserData
+    {
+        [ProtoMember(1)] public byte[] Ip { get; set; }
+        [ProtoMember(2)] public List<int> Fixed32Port { get; set; }
+        [ProtoMember(3)] public byte[] Ssid { get; set; }
+        [ProtoMember(4)] public byte[] Bssid { get; set; }
+        [ProtoMember(5)] public int EnumPlatform { get; set; }
     }
 }
 
 
-internal class Submsgtype0x116 {
-    internal class Submsgtype0x116  {
-        [ProtoContract]
-        internal class MemberInfo{
-            [ProtoMember(1)] public  long  MemberUin { get; set; }
-            [ProtoMember(2)] public  int  InviteTimestamp { get; set; }
-            [ProtoMember(3)] public  int  TerminalType { get; set; }
-            [ProtoMember(4)] public  int  ClientVersion { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  List<MemberInfo>  MsgMemberJoin { get; set; }
-            [ProtoMember(2)] public  List<MemberInfo>  MsgMemberQuit { get; set; }
-            [ProtoMember(3)] public  int  GroupId { get; set; }
-            [ProtoMember(4)] public  int  RoomId { get; set; }
-            [ProtoMember(5)] public  int  InviteListTotalCount { get; set; }
-            [ProtoMember(6)] public  int  EnumEventType { get; set; }
-        } 
-    }
-}
-
-
-internal class Submsgtype0x117 {
-    internal class Submsgtype0x117  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  long  Uin { get; set; }
-            [ProtoMember(2)] public  List<int>  Uint32MoudleId { get; set; }
-        } 
-    }
-}
-
-
-internal class Submsgtype0x118 {
-    internal class Submsgtype0x118  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  int  PushType { get; set; }
-            [ProtoMember(2)] public  byte[]  PushData { get; set; }
-            [ProtoMember(3)] public  int  Timestamp { get; set; }
-            [ProtoMember(4)] public  SystemNotify?  MsgSystemNotify { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class SystemNotify{
-            [ProtoMember(1)] public  byte[]  MsgSummary { get; set; }
-            [ProtoMember(2)] public  int  FilterFlag { get; set; }
-            [ProtoMember(3)] public  byte[]  ExtendContent { get; set; }
-            [ProtoMember(4)] public  int  IgnorePcActive { get; set; }
-            [ProtoMember(5)] public  int  FilterVersion { get; set; }
-            [ProtoMember(6)] public  int  CountFlag { get; set; }
-            [ProtoMember(7)] public  int  FilterVersionUpperlimitFlag { get; set; }
-            [ProtoMember(8)] public  int  FilterVersionUpperlimit { get; set; }
-            [ProtoMember(9)] public  byte[]  CustomSound { get; set; }
-            [ProtoMember(10)] public  int  AdmnFlag { get; set; }
-            [ProtoMember(11)] public  int  IgnoreWithoutContent { get; set; }
-            [ProtoMember(12)] public  byte[]  MsgTitle { get; set; }
-        } 
-    }
-}
-
-
-internal class Submsgtype0x119 {
-    internal class SubMsgType0x119  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  long  WriterUin { get; set; }
-            [ProtoMember(2)] public  long  CreatorUin { get; set; }
-            [ProtoMember(3)] public  byte[]  RichContent { get; set; }
-            [ProtoMember(4)] public  byte[]  OptBytesUrl { get; set; }
-            [ProtoMember(5)] public  byte[]  CreatorNick { get; set; }
-        } 
-    }
-}
-
-
-internal class Submsgtype0x11a {
-    internal class Submsgtype0x11a  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  int  EnumResult { get; set; }
-            [ProtoMember(2)] public  byte[]  Token { get; set; }
-            [ProtoMember(3)] public  byte[]  EncryptKey { get; set; }
-            [ProtoMember(4)] public  UserData?  MsgUserData { get; set; }
-            [ProtoMember(5)] public  int  EnumBizType { get; set; }
-        } 
-
-        [ProtoContract]
-        internal class UserData{
-            [ProtoMember(1)] public  byte[]  Ip { get; set; }
-            [ProtoMember(2)] public  List<int>  Fixed32Port { get; set; }
-            [ProtoMember(3)] public  byte[]  Ssid { get; set; }
-            [ProtoMember(4)] public  byte[]  Bssid { get; set; }
-            [ProtoMember(5)] public  int  EnumPlatform { get; set; }
-        } 
-    }
-}
-
-
-internal class Submsgtype0x11b {
-    internal class Submsgtype0x11b  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  byte[]  QrSig { get; set; }
-            [ProtoMember(2)] public  int  EnumBizType { get; set; }
-        } 
+internal class Submsgtype0x11b
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public byte[] QrSig { get; set; }
+        [ProtoMember(2)] public int EnumBizType { get; set; }
     }
 }
 
@@ -323,13 +325,13 @@ internal class Submsgtype0x11c {
 }
 
 
-internal class Submsgtype0x11e {
-    internal class SubMsgType0x11e  {
-        [ProtoContract]
-        internal class MsgBody{
-            [ProtoMember(1)] public  int  Type { get; set; }
-            [ProtoMember(2)] public  string  Reason { get; set; }
-        } 
+internal class SubMsgType0x11e
+{
+    [ProtoContract]
+    internal class MsgBody
+    {
+        [ProtoMember(1)] public int Type { get; set; }
+        [ProtoMember(2)] public string Reason { get; set; }
     }
 }
 
