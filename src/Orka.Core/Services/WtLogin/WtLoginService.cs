@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+
 using Microsoft.Extensions.Logging;
 
 namespace Orka.Core.Services.WtLogin;
@@ -18,7 +19,7 @@ public class WtLoginService
     {
         if (_context.Status == WtLoginStatus.Online)
         {
-            _logger.LogError("Can't login while bot is Online.");
+            _logger.LogWarning("Can't login while bot is Online.");
             return;
         }
 

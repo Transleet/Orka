@@ -11,6 +11,6 @@ internal class JceMap : JceMap<object, object>
 {
 }
 
-internal class JceMap<K, V> : Dictionary<K, V> where K : notnull
+internal class JceMap<TK, TV> : Dictionary<TK, TV> where TK : notnull
 {
 }

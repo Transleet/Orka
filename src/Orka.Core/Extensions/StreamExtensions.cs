@@ -11,8 +11,8 @@ internal static class StreamExtensions
 {
     public static byte[] ReadBytes(this Stream stream, int length)
     {
-        var arr = GC.AllocateUninitializedArray<byte>(length);
-        stream.Read(arr);
+        byte[] arr = GC.AllocateUninitializedArray<byte>(length);
+        int read = stream.Read(arr);
         return arr;
     }
 }
