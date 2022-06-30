@@ -8,4 +8,5 @@ namespace Orka.Core.Serialization.Jce;
 
 internal interface IJceStruct
 {
+
 }

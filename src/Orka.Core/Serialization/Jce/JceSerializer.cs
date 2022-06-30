@@ -12,20 +12,26 @@ namespace Orka.Core.Serialization.Jce;
 internal static class JceSerializer
 {
 
-    public static byte[] Serialize<T>(T obj) where T : class, IJceStruct
+    public static byte[] Serialize<T>(T obj) where T : class
     {
-        var stream = new MemoryStream();
+        JceHelpers.ThrowIfNotJceStruct<T>();
+        using var stream = new MemoryStream();
         var writer = new JceWriter(stream);
         var properties = JceHelpers.GetTagsAndProperties<T>();
         foreach (KeyValuePair<int, PropertyInfo> keyValuePair in properties)
         {
-            writer.WriteElement(keyValuePair.Key, keyValuePair.Value.GetValue(obj)!);
+            var value = keyValuePair.Value.GetValue(obj);
+            if (value is not null)
+            {
+                writer.WriteElement(keyValuePair.Key, value);
+            }
         }
         return stream.ToArray();
     }
 
-    public static T Deserialize<T>(byte[] data) where T : class, IJceStruct
+    public static T Deserialize<T>(byte[] data) where T : class
     {
+        JceHelpers.ThrowIfNotJceStruct<T>();
         var obj = Activator.CreateInstance<T>();
         var stream = new MemoryStream(data);
         var reader = new JceReader(stream);

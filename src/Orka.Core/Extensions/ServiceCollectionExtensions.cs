@@ -14,8 +14,11 @@ public static class ServiceCollectionExtensions
         {
             services.Configure(options);
         }
+        services.AddHttpClient();
+        services.TryAddSingleton<DeviceManager>();
         services.TryAddSingleton<WtLoginContext>();
         services.TryAddSingleton<WtLoginService>();
+        services.TryAddSingleton<NetworkService>();
         services.TryAddSingleton<SocketService>();
         services.TryAddSingleton<IOrkaClient, OrkaClient>();
         return services;

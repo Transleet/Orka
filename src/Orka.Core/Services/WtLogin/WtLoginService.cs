@@ -4,15 +4,17 @@ using Microsoft.Extensions.Logging;
 
 namespace Orka.Core.Services.WtLogin;
 
-public class WtLoginService
+internal class WtLoginService
 {
     private readonly WtLoginContext _context;
     private readonly ILogger<WtLoginService> _logger;
+    private readonly NetworkService _networkService;
 
-    public WtLoginService(WtLoginContext context, ILogger<WtLoginService> logger)
+    public WtLoginService(WtLoginContext context, ILogger<WtLoginService> logger, NetworkService networkService)
     {
         _context = context;
         _logger = logger;
+        _networkService = networkService;
     }
 
     public async Task LoginAsync()
@@ -24,6 +26,7 @@ public class WtLoginService
         }
 
         _logger.LogInformation("Connecting server.");
+        await _networkService.ConnectAsync();
 
     }
 }

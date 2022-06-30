@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -128,21 +129,18 @@ internal class JceWriter
                         }
                         break;
                     }
-                    if (value is IJceStruct jceStruct)
+                    JceHelpers.ThrowIfNotJceStruct(value.GetType());
+                    WriteHead(JceType.StructBegin, tag);
+                    var properties = JceHelpers.GetTagsAndProperties(value.GetType());
+                    foreach (KeyValuePair<int, PropertyInfo> keyValuePair in properties)
                     {
-                        WriteHead(JceType.StructBegin, tag);
-                        var properties = JceHelpers.GetTagsAndProperties(jceStruct.GetType());
-                        foreach (KeyValuePair<int, PropertyInfo> keyValuePair in properties)
-                        {
-                            WriteElement(keyValuePair.Key, keyValuePair.Value.GetValue(value)!);
-                        }
-                        WriteHead(JceType.StructEnd, 0);
-                        break;
+                        WriteElement(keyValuePair.Key, keyValuePair.Value.GetValue(value)!);
                     }
+                    WriteHead(JceType.StructEnd, 0);
+                    break;
                 }
-                throw new Exception();
             default:
-                throw new Exception();
+                throw new Exception("No matched type found for value.");
         }
     }
 }

@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddOrkaBot<T>(this IServiceCollection services) where T : class, IOrkaBot
     {
-
+        Core.Extensions.ServiceCollectionExtensions.TyrAddOrkaClient(services);
         services.AddSingleton<T>();
         services.AddHostedService<BotService<T>>();
         return services;

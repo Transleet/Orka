@@ -9,7 +9,7 @@ using Orka.Core.Services.WtLogin;
 
 namespace Orka.Core;
 
-public partial class OrkaClient : IOrkaClient
+internal partial class OrkaClient : IOrkaClient
 {
     private readonly ILogger<OrkaClient> _logger;
     private IOptions<OrkaClientOptions> _options;
@@ -27,5 +27,4 @@ public partial class OrkaClient : IOrkaClient
         await _wtLogin.LoginAsync();
     }
 
-    public event EventHandler MessageRecieved;
 }

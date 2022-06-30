@@ -15,6 +15,5 @@ internal enum JceType : byte
     StructBegin = 10,
     StructEnd = 11,
     ZeroTag = 12,
-    SimpleList = 13,
-    Null = byte.MaxValue
+    SimpleList = 13
 }
