@@ -29,9 +29,9 @@ internal static class JceHelpers
         }
         return properties;
     }
-
+    
     public static void ThrowIfNotJceStruct<T>() => ThrowIfNotJceStruct(typeof(T));
-
+    
     public static void ThrowIfNotJceStruct(Type type)
     {
         if (type.GetInterface("IJceStruct") is not null)

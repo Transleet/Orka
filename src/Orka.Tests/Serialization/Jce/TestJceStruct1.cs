@@ -11,7 +11,7 @@ namespace Orka.Tests.Serialization.Jce;
 internal class TestJceStruct1 : IJceStruct
 {
     [JceMember(0)] public int Zero { get; set; }
-    [JceMember(1)] public sbyte Num1 { get; set; }
+    [JceMember(1)] public byte Num1 { get; set; }
     [JceMember(2)] public short Num2 { get; set; }
     [JceMember(3)] public short Num3 { get; set; }
     [JceMember(4)] public int Num4 { get; set; }

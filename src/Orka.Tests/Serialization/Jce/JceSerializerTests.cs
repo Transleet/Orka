@@ -17,13 +17,13 @@ public class JceSerializerTests
         var expected = new TestJceStruct1()
         {
             Zero = 0,
-            Num1 = (sbyte)Random.Shared.Next(sbyte.MinValue, sbyte.MaxValue),
-            Num2 = (sbyte)Random.Shared.Next(sbyte.MinValue, sbyte.MaxValue),
+            Num1 = (byte)Random.Shared.Next(byte.MinValue, byte.MaxValue),
+            Num2 = (byte)Random.Shared.Next(byte.MinValue, byte.MaxValue),
             Num3 = (short)Random.Shared.Next(short.MinValue, short.MaxValue),
-            Num4 = (sbyte)Random.Shared.Next(sbyte.MinValue, sbyte.MaxValue),
+            Num4 = (byte)Random.Shared.Next(byte.MinValue, byte.MaxValue),
             Num5 = (short)Random.Shared.Next(short.MinValue, short.MaxValue),
             Num6 = Random.Shared.Next(),
-            Num7 = (sbyte)Random.Shared.Next(sbyte.MinValue, sbyte.MaxValue),
+            Num7 = (byte)Random.Shared.Next(byte.MinValue, byte.MaxValue),
             Num8 = (short)Random.Shared.Next(short.MinValue, short.MaxValue),
             Num9 = Random.Shared.Next(),
             Num10 = Random.Shared.NextInt64(),

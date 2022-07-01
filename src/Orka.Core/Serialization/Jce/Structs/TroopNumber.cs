@@ -4,7 +4,7 @@ internal class TroopNumber : IJceStruct
 {
     [JceMember(0)] public long GroupUin { get; set; }
     [JceMember(1)] public long GroupCode { get; set; }
-    [JceMember(2)] public sbyte Flag { get; set; }
+    [JceMember(2)] public byte Flag { get; set; }
     [JceMember(3)] public long GroupInfoSeq { get; set; }
     [JceMember(4)] public string GroupName { get; set; }
     [JceMember(5)] public string GroupMemo { get; set; }
@@ -26,9 +26,9 @@ internal class TroopNumber : IJceStruct
     [JceMember(21)] public long MemberCardSeq { get; set; }
     [JceMember(22)] public long GroupFlagExt3 { get; set; }
     [JceMember(23)] public long GroupOwnerUin { get; set; }
-    [JceMember(24)] public sbyte IsConfGroup { get; set; }
-    [JceMember(25)] public sbyte IsModifyConfGroupFace { get; set; }
-    [JceMember(26)] public sbyte IsModifyConfGroupName { get; set; }
+    [JceMember(24)] public byte IsConfGroup { get; set; }
+    [JceMember(25)] public byte IsModifyConfGroupFace { get; set; }
+    [JceMember(26)] public byte IsModifyConfGroupName { get; set; }
     [JceMember(27)] public long CmdUinJoinTime { get; set; }
     [JceMember(28)] public long CompanyId { get; set; }
     [JceMember(29)] public long MaxGroupMemberNum { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Orka.Core.Serialization.Jce;
 
-internal enum JceType : byte
+internal enum JceType
 {
     Int8 = 0,
     Int16 = 1,

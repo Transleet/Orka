@@ -9,22 +9,22 @@ using Orka.Core.Services.WtLogin;
 
 namespace Orka.Core;
 
-internal partial class OrkaClient : IOrkaClient
+internal class OrkaClient : IOrkaClient
 {
     private readonly ILogger<OrkaClient> _logger;
     private IOptions<OrkaClientOptions> _options;
-    private WtLoginService _wtLogin;
+    private readonly WtLoginService _wtLoginService;
 
-    public OrkaClient(IOptions<OrkaClientOptions> options, ILogger<OrkaClient> logger, WtLoginService wtLogin)
+    public OrkaClient(IOptions<OrkaClientOptions> options, ILogger<OrkaClient> logger, WtLoginService wtLoginService)
     {
         _logger = logger;
         _options = options;
-        _wtLogin = wtLogin;
+        _wtLoginService = wtLoginService;
     }
 
     public async Task LoginAsync()
     {
-        await _wtLogin.LoginAsync();
+        await _wtLoginService.LoginAsync();
     }
 
 }

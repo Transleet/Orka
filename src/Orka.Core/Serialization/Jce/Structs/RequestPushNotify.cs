@@ -3,7 +3,7 @@
 internal class RequestPushNotify : IJceStruct
 {
     [JceMember(0)] public long Uin { get; set; }
-    [JceMember(1)] public sbyte Type { get; set; }
+    [JceMember(1)] public byte Type { get; set; }
     [JceMember(2)] public string Service { get; set; }
     [JceMember(3)] public string Cmd { get; set; }
     [JceMember(4)] public byte[] NotifyCookie { get; set; }

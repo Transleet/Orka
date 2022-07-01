@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Orka.Core.Extensions;
+using static Orka.Core.Serialization.ProtoBuf.GroupOpenSysMsg;
 
 namespace Orka.Core.Serialization.Jce;
 
@@ -22,6 +23,8 @@ internal class JceReader
     public JceReader(Stream stream) => _stream = stream;
 
     public bool EndOfStream => _stream.Position >= _stream.Length;
+
+    [DebuggerNonUserCode]
     public HeadData ReadHead()
     {
         var head = new HeadData();
@@ -35,15 +38,25 @@ internal class JceReader
         return head;
     }
 
-    public (int tag, object value) ReadElement(Type? expectedType = null)
+    public (int tag, object value) ReadElement(Type expectedType)
     {
         var head = ReadHead();
         switch (head.Type)
         {
+            case JceType.ZeroTag:
+                return (head.Tag, Convert.ChangeType(0, expectedType));
             case JceType.Int8:
                 byte b = (byte)_stream.ReadByte();
+                if (expectedType == typeof(byte))
+                {
+                    return (head.Tag, (byte)Unsafe.As<byte, sbyte>(ref b));
+                }
                 return (head.Tag, Unsafe.As<byte, sbyte>(ref b));
             case JceType.Int16:
+                if (expectedType == typeof(byte))
+                {
+                    return (head.Tag, (byte)Number.ToInt16(_stream.ReadBytes(2)));
+                }
                 return (head.Tag, Number.ToInt16(_stream.ReadBytes(2)));
             case JceType.Int32:
                 return (head.Tag, Number.ToInt32(_stream.ReadBytes(4)));
@@ -66,47 +79,67 @@ internal class JceReader
             case JceType.SimpleList:
                 {
                     ReadHead();
-                    int length = Convert.ToInt32(ReadElement().value);
+                    int length = Convert.ToInt32(ReadElement(typeof(int)).value);
                     return (head.Tag, length > 0 ? _stream.ReadBytes(length) : Array.Empty<byte>());
                 }
             case JceType.List:
                 {
-                    int length = Convert.ToInt32(ReadElement().value);
-                    var list = new JceList();
-                    while (length > 0)
+                    int length = Convert.ToInt32(ReadElement(typeof(int)).value);
+
+                    if (expectedType.IsGenericType)
                     {
-                        list.Add(ReadElement().value);
-                        --length;
+                        var list = Activator.CreateInstance(expectedType)!;
+                        var add = expectedType.GetMethod("Add");
+                        Type? itemType = expectedType?.GenericTypeArguments[0];
+                        for (int i = 0; i < length; i++)
+                        {
+                            add.Invoke(list, new[] { ReadElement(itemType).value });
+                        }
+                        return (head.Tag, list);
                     }
-                    return (head.Tag, list);
+                    else
+                    {
+                        var list = new JceList();
+                        for (int i = 0; i < length; i++)
+                        {
+                            list.Add(ReadElement(typeof(object)).value);
+                        }
+                        return (head.Tag, list);
+                    }
                 }
             case JceType.Map:
                 {
-                    int length = Convert.ToInt32(ReadElement().value);
+                    int length = Convert.ToInt32(ReadElement(typeof(int)).value);
                     var map = new JceMap();
                     while (length > 0)
                     {
-                        map[ReadElement().value] = ReadElement().value;
+                        map[ReadElement(typeof(object)).value] = ReadElement(typeof(object)).value;
                         --length;
                     }
                     return (head.Tag, map);
                 }
             case JceType.StructBegin:
-                Debug.Assert(expectedType != null);
-                object jceStruct = Activator.CreateInstance(expectedType)!;
+                Debug.Assert(expectedType is not null);
+                object obj = Activator.CreateInstance(expectedType)!;
                 var properties = JceHelpers.GetTagsAndProperties(expectedType);
+                (int tag, object value)? item = null;
                 foreach (KeyValuePair<int, PropertyInfo> propertyInfo in properties)
                 {
-                    var item = ReadElement(propertyInfo.Value.PropertyType);
-                    if (item.tag != propertyInfo.Key)
+                    if (!item.HasValue)
+                    {
+                        item = ReadElement(propertyInfo.Value.PropertyType);
+                    }
+                    if (item.Value.tag != propertyInfo.Key)
                     {
                         continue;
                     }
-                    propertyInfo.Value.SetValue(jceStruct, item.value);
+                    propertyInfo.Value.SetValue(obj, item.Value.value);
+                    item = null;
                 }
-                return (head.Tag, jceStruct);
+                while (ReadElement(typeof(object)).tag != -1) { }
+                return (head.Tag, obj);
             case JceType.StructEnd:
-                return (head.Tag, new object());
+                return (-1, null!);
             default:
                 throw new InvalidEnumArgumentException();
         }

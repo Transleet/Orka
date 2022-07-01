@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -39,14 +40,15 @@ internal class NetworkService
             _logger.LogError("Can't connect to server while already connected");
         }
         var device = _deviceManager.GetDefaultDevice();
-        await FetchServersAsync(device);
+        await FetchServerListAsync(device);
     }
 
 
-    private async Task FetchServersAsync(DeviceInfo deviceInfo)
+    private async Task FetchServerListAsync(DeviceInfo deviceInfo)
     {
         _logger.LogInformation("Fetching server list...");
         var httpClient = _httpClientFactory.CreateClient();
+        httpClient.Timeout = TimeSpan.FromSeconds(10);
         byte[] key = Convert.FromHexString("F0441F5FF42DA58FDCF7949ABA62D411");
         byte[] payload = new SvcReqHttpServerList
         {
@@ -65,12 +67,18 @@ internal class NetworkService
             L13 = 0,
             B14 = 1
         }.ToByteArray();
-        byte[] pkt = new RequestPacket()
+        byte[] pkt = new RequestPacket
         {
             IVersion = 3,
+            CPacketType =0,
+            IMessageType = 0,
+            IRequestId = 0,
             SServantName = "ConfigHttp",
             SFuncName = "HttpServerListReq",
-            SBuffer = new RequestDataVersion3 { Map = new JceMap { ["HttpServerListReq"] = BinaryPacket.PackUniRequestData(payload) } }.ToByteArray()
+            SBuffer = new RequestDataVersion3 { Map = new JceMap { ["HttpServerListReq"] = BinaryPacket.PackUniRequestData(payload) } }.ToByteArray(),
+            ITimeout = 0,
+            Context = new JceMap(),
+            Status = new JceMap()
         }.ToByteArray();
         var tea = new Tea(key);
         byte[] reqData = tea.Encrypt(BinaryPacket.CombineLength((uint)pkt.Length, pkt));
@@ -84,14 +92,14 @@ internal class NetworkService
         catch (Exception e)
         {
             _logger.LogTrace(e, e.Message);
-            throw new Exception("Unable to fetch server list.");
+            return;
         }
         byte[] dec = tea.Decrypt(body);
-        var rspPacket = JceSerializer.Deserialize<RequestPacket>(dec);
+        var rspPacket = JceSerializer.Deserialize<RequestPacket>(dec[4..]);
         var data = JceSerializer.Deserialize<RequestDataVersion3>(rspPacket.SBuffer);
-        if (data.Map["HttpServerListRes"] is byte[] bytes)
+        if (data.Map["HttpServerListRes"] is byte[] res)
         {
-
+            var serverList = JceSerializer.Deserialize<SvcRspHttpServerList>(res[1..^1]);
         }
         else
         {

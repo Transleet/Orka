@@ -33,6 +33,8 @@ internal class JceWriter
     {
         switch (Type.GetTypeCode(value.GetType()))
         {
+            case TypeCode.Byte:
+                goto case TypeCode.Int16;
             case TypeCode.Int64:
                 long n1 = Convert.ToInt64(value);
                 if (n1 == 0)
@@ -58,6 +60,11 @@ internal class JceWriter
                 goto case TypeCode.Int16;
             case TypeCode.Int16:
                 short n3 = Convert.ToInt16(value);
+                if (n3 == 0)
+                {
+                    WriteHead(JceType.ZeroTag, tag);
+                    break;
+                }
                 if (n3 is > sbyte.MaxValue or < sbyte.MinValue)
                 {
                     WriteHead(JceType.Int16, tag);

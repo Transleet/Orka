@@ -19,9 +19,10 @@ internal static class BinaryPacket
 
     public static byte[] PackUniRequestData(byte[] data)
     {
-        var r = new List<byte> { 0x0A };
-        r.AddRange(data);
-        r.Add(0x0B);
-        return r.ToArray();
+        byte[] arr = GC.AllocateUninitializedArray<byte>(data.Length + 2);
+        arr[0] = 0x0A;
+        data.CopyTo(arr,1);
+        arr[^1] = 0x0B;
+        return arr;
     }
 }

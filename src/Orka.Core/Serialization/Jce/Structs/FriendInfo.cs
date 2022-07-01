@@ -3,25 +3,25 @@
 internal class FriendInfo : IJceStruct
 {
     [JceMember(0)] public long FriendUin { get; set; }
-    [JceMember(1)] public sbyte GroupId { get; set; }
+    [JceMember(1)] public byte GroupId { get; set; }
     [JceMember(2)] public short FaceId { get; set; }
     [JceMember(3)] public string Remark { get; set; }
-    [JceMember(4)] public sbyte QQType { get; set; }
-    [JceMember(5)] public sbyte Status { get; set; }
-    [JceMember(6)] public sbyte MemberLevel { get; set; }
-    [JceMember(7)] public sbyte IsMqqOnLine { get; set; }
-    [JceMember(8)] public sbyte QQOnlineState { get; set; }
-    [JceMember(9)] public sbyte IsIphoneOnline { get; set; }
-    [JceMember(10)] public sbyte DetailStatusFlag { get; set; }
-    [JceMember(11)] public sbyte QQOnlineStateV2 { get; set; }
+    [JceMember(4)] public byte QQType { get; set; }
+    [JceMember(5)] public byte Status { get; set; }
+    [JceMember(6)] public byte MemberLevel { get; set; }
+    [JceMember(7)] public byte IsMqqOnLine { get; set; }
+    [JceMember(8)] public byte QQOnlineState { get; set; }
+    [JceMember(9)] public byte IsIphoneOnline { get; set; }
+    [JceMember(10)] public byte DetailStatusFlag { get; set; }
+    [JceMember(11)] public byte QQOnlineStateV2 { get; set; }
     [JceMember(12)] public string ShowName { get; set; }
-    [JceMember(13)] public sbyte IsRemark { get; set; }
+    [JceMember(13)] public byte IsRemark { get; set; }
     [JceMember(14)] public string Nick { get; set; }
-    [JceMember(15)] public sbyte SpecialFlag { get; set; }
+    [JceMember(15)] public byte SpecialFlag { get; set; }
     [JceMember(16)] public byte[] IMGroupID { get; set; }
     [JceMember(17)] public byte[] MSFGroupID { get; set; }
     [JceMember(18)] public int TermType { get; set; }
-    [JceMember(20)] public sbyte Network { get; set; }
+    [JceMember(20)] public byte Network { get; set; }
     [JceMember(21)] public byte[] Ring { get; set; }
     [JceMember(22)] public long AbiFlag { get; set; }
     [JceMember(23)] public long FaceAddonId { get; set; }
@@ -30,13 +30,13 @@ internal class FriendInfo : IJceStruct
     [JceMember(26)] public int IconType { get; set; }
     [JceMember(27)] public string TermDesc { get; set; }
     [JceMember(28)] public long ColorRing { get; set; }
-    [JceMember(29)] public sbyte ApolloFlag { get; set; }
+    [JceMember(29)] public byte ApolloFlag { get; set; }
     [JceMember(30)] public long ApolloTimestamp { get; set; }
-    [JceMember(31)] public sbyte Sex { get; set; }
+    [JceMember(31)] public byte Sex { get; set; }
     [JceMember(32)] public long FounderFont { get; set; }
     [JceMember(33)] public string EimId { get; set; }
     [JceMember(34)] public string EimMobile { get; set; }
-    [JceMember(35)] public sbyte OlympicTorch { get; set; }
+    [JceMember(35)] public byte OlympicTorch { get; set; }
     [JceMember(36)] public long ApolloSignTime { get; set; }
     [JceMember(37)] public long LaviUin { get; set; }
     [JceMember(38)] public long TagUpdateTime { get; set; }
@@ -44,7 +44,7 @@ internal class FriendInfo : IJceStruct
     [JceMember(40)] public long GameAppId { get; set; }
     [JceMember(41)] public byte[] CardID { get; set; }
     [JceMember(42)] public long BitSet { get; set; }
-    [JceMember(43)] public sbyte KingOfGloryFlag { get; set; }
+    [JceMember(43)] public byte KingOfGloryFlag { get; set; }
     [JceMember(44)] public long KingOfGloryRank { get; set; }
     [JceMember(45)] public string MasterUin { get; set; }
     [JceMember(46)] public long LastMedalUpdateTime { get; set; }
@@ -52,10 +52,10 @@ internal class FriendInfo : IJceStruct
     [JceMember(48)] public long FontEffect { get; set; }
     [JceMember(49)] public string DOVId { get; set; }
     [JceMember(50)] public long BothFlag { get; set; }
-    [JceMember(51)] public sbyte CentiShow3DFlag { get; set; }
+    [JceMember(51)] public byte CentiShow3DFlag { get; set; }
     [JceMember(52)] public byte[] IntimateInfo { get; set; }
-    [JceMember(53)] public sbyte ShowNameplate { get; set; }
-    [JceMember(54)] public sbyte NewLoverDiamondFlag { get; set; }
+    [JceMember(53)] public byte ShowNameplate { get; set; }
+    [JceMember(54)] public byte NewLoverDiamondFlag { get; set; }
     [JceMember(55)] public byte[] ExtSnsFrdData { get; set; }
     [JceMember(56)] public byte[] MutualMarkData { get; set; }
 }

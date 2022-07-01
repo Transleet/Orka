@@ -9,5 +9,5 @@ internal class TroopMemberListRequest : IJceStruct
     [JceMember(4)] public long Version { get; set; }
     [JceMember(5)] public long ReqType { get; set; }
     [JceMember(6)] public long GetListAppointTime { get; set; }
-    [JceMember(7)] public sbyte RichCardNameVer { get; set; }
+    [JceMember(7)] public byte RichCardNameVer { get; set; }
 }

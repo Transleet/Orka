@@ -7,7 +7,7 @@ namespace Orka.Core;
 internal static class Number
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static short ToInt16(ReadOnlySpan<byte> bytes) => BinaryPrimitives.ReadInt16BigEndian(bytes);
+    public static short ToInt16<T>(ReadOnlySpan<byte> bytes) => BinaryPrimitives.ReadInt16BigEndian(bytes); 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static short ToInt16(byte[] bytes) => BinaryPrimitives.ReadInt16BigEndian(bytes);

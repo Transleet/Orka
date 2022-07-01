@@ -10,7 +10,7 @@ namespace Orka.Core.Serialization.Jce.Structs;
 internal class RequestPacket : IJceStruct
 {
     [JceMember(1)] public short IVersion { get; set; }
-    [JceMember(2)] public sbyte CPacketType { get; set; }
+    [JceMember(2)] public byte CPacketType { get; set; }
     [JceMember(3)] public int IMessageType { get; set; }
     [JceMember(4)] public int IRequestId { get; set; }
     [JceMember(5)] public string SServantName { get; set; }

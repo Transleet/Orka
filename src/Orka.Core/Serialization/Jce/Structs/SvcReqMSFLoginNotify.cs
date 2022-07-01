@@ -3,8 +3,8 @@
 internal class SvcReqMSFLoginNotify : IJceStruct
 {
     [JceMember(0)] public long AppId { get; set; }
-    [JceMember(1)] public sbyte Status { get; set; }
-    [JceMember(2)] public sbyte Tablet { get; set; }
+    [JceMember(1)] public byte Status { get; set; }
+    [JceMember(2)] public byte Tablet { get; set; }
     [JceMember(3)] public long Platform { get; set; }
     [JceMember(4)] public string Title { get; set; }
     [JceMember(5)] public string Info { get; set; }

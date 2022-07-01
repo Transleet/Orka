@@ -36,14 +36,19 @@ internal static class JceSerializer
         var stream = new MemoryStream(data);
         var reader = new JceReader(stream);
         var properties = JceHelpers.GetTagsAndProperties<T>();
+        (int tag, object value)? item = null;
         foreach (KeyValuePair<int, PropertyInfo> propertyInfo in properties)
         {
-            var item = reader.ReadElement(propertyInfo.Value.PropertyType);
-            if (item.tag != propertyInfo.Key)
+            if (!item.HasValue)
+            {
+                item = reader.ReadElement(propertyInfo.Value.PropertyType);
+            }
+            if (item.Value.tag != propertyInfo.Key)
             {
                 continue;
             }
-            propertyInfo.Value.SetValue(obj, item.value);
+            propertyInfo.Value.SetValue(obj, item.Value.value);
+            item = null;
         }
         return obj;
     }
