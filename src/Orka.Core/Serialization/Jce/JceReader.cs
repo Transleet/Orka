@@ -21,10 +21,7 @@ internal class JceReader
     private readonly Stream _stream;
 
     public JceReader(Stream stream) => _stream = stream;
-
-    public bool EndOfStream => _stream.Position >= _stream.Length;
-
-    [DebuggerNonUserCode]
+    
     public HeadData ReadHead()
     {
         var head = new HeadData();
@@ -90,7 +87,7 @@ internal class JceReader
                     {
                         var list = Activator.CreateInstance(expectedType)!;
                         var add = expectedType.GetMethod("Add");
-                        Type? itemType = expectedType?.GenericTypeArguments[0];
+                        Type? itemType = expectedType?.GenericTypeArguments[0]!;
                         for (int i = 0; i < length; i++)
                         {
                             add.Invoke(list, new[] { ReadElement(itemType).value });
@@ -125,10 +122,7 @@ internal class JceReader
                 (int tag, object value)? item = null;
                 foreach (KeyValuePair<int, PropertyInfo> propertyInfo in properties)
                 {
-                    if (!item.HasValue)
-                    {
-                        item = ReadElement(propertyInfo.Value.PropertyType);
-                    }
+                    item ??= ReadElement(propertyInfo.Value.PropertyType);
                     if (item.Value.tag != propertyInfo.Key)
                     {
                         continue;
