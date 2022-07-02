@@ -44,7 +44,7 @@ internal class NetworkService
     }
 
 
-    private async Task FetchServerListAsync(DeviceInfo deviceInfo)
+    private async Task<List<IPEndPoint>> FetchServerListAsync(DeviceInfo deviceInfo)
     {
         _logger.LogInformation("Fetching server list...");
         var httpClient = _httpClientFactory.CreateClient();
@@ -92,7 +92,7 @@ internal class NetworkService
         catch (Exception e)
         {
             _logger.LogTrace(e, e.Message);
-            return;
+            throw;
         }
         byte[] dec = tea.Decrypt(body);
         var rspPacket = JceSerializer.Deserialize<RequestPacket>(dec[4..]);
