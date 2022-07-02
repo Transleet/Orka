@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Orka.Core\Orka.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Network\" />
+  </ItemGroup>
+
 </Project>

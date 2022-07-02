@@ -1,62 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Extensions.Logging;
-
-using Orka.Core.Crypto;
-using Orka.Core.Extensions;
-using Orka.Core.Serialization.Jce;
+﻿using Orka.Core.Crypto;
 using Orka.Core.Serialization.Jce.Structs;
+using Orka.Core.Serialization.Jce;
+using Orka.Core;
+using System.Net.Http;
+using System;
+using System.Threading.Tasks;
+using Orka.Core.Extensions;
+using Xunit;
+using Xunit.Abstractions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net;
 
-namespace Orka.Core.Services;
-
-internal class NetworkService
+namespace Orka.Tests.Network;
+public class NetworkTests
 {
-    private readonly ILogger<SocketService> _logger;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly SocketService _socketService;
-    private readonly DeviceManager _deviceManager;
+    private readonly ITestOutputHelper _testOutputHelper;
 
-    private List<IPEndPoint> _servers = new();
-    private bool _connected;
-
-    public NetworkService(ILogger<SocketService> logger, IHttpClientFactory httpClientFactory, SocketService socketService, DeviceManager deviceManager)
+    public NetworkTests(ITestOutputHelper testOutputHelper)
     {
-        _logger = logger;
-        _httpClientFactory = httpClientFactory;
-        _socketService = socketService;
-        _deviceManager = deviceManager;
+        _testOutputHelper = testOutputHelper;
     }
 
-    public async Task ConnectAsync()
+    [Fact]
+    internal async Task<SvcRspHttpServerList> SsoTests()
     {
-        if (_connected)
-        {
-            _logger.LogError("Can't connect to server while already connected");
-        }
-        var device = _deviceManager.GetDefaultDevice();
-        SvcRspHttpServerList svcRspHttpServerList = await FetchServerListAsync(device);
-        _servers = await PingServerAsync(svcRspHttpServerList);
-        if (_servers.Count < 1)
-        {
-            _logger.LogError("Server list was null, connect failed.");
-            return;
-        }
-    }
-
-
-    private async Task<SvcRspHttpServerList> FetchServerListAsync(DeviceInfo deviceInfo)
-    {
-        _logger.LogInformation("Fetching server list...");
-        var httpClient = _httpClientFactory.CreateClient();
+        DeviceInfo deviceInfo = new DeviceManager().GetDefaultDevice();
+        var httpClient = new HttpClient();
         httpClient.Timeout = TimeSpan.FromSeconds(10);
         byte[] key = Convert.FromHexString("F0441F5FF42DA58FDCF7949ABA62D411");
         byte[] payload = new SvcReqHttpServerList
@@ -98,17 +69,19 @@ internal class NetworkService
                 new ByteArrayContent(reqData));
             body = await rsp.Content.ReadAsByteArrayAsync();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
-            _logger.LogTrace(e, e.Message);
-            throw;
+            throw e;
+            // ignored
         }
+
         byte[] dec = tea.Decrypt(body);
         var rspPacket = JceSerializer.Deserialize<RequestPacket>(dec[4..]);
         var data = JceSerializer.Deserialize<RequestDataVersion3>(rspPacket.SBuffer);
         if (data.Map["HttpServerListRes"] is byte[] res)
         {
             var serverList = JceSerializer.Deserialize<SvcRspHttpServerList>(res[1..^1]);
+            _testOutputHelper.WriteLine(serverList.ToString());
             return serverList;
         }
         else
@@ -117,13 +90,15 @@ internal class NetworkService
         }
     }
 
-    private async Task<List<IPEndPoint>> PingServerAsync(SvcRspHttpServerList list)
+    [Fact]
+    private async Task<IPEndPoint[]> PingServerAsync()
     {
+        var list = await SsoTests();
         Ping ping = new();
         var pinged = new List<dynamic>();
         foreach (SsoServerInfo ssoServerInfo in list.Servers)
         {
-            PingReply pingReply = await ping.SendPingAsync(ssoServerInfo.Server,2000);
+            PingReply pingReply = await ping.SendPingAsync(ssoServerInfo.Server);
             if (pingReply.Status != IPStatus.Success)
             {
                 continue;
@@ -137,6 +112,6 @@ internal class NetworkService
         }
 
         var sorted = pinged.OrderBy(o => o.Ms);
-        return sorted.Select(o => new IPEndPoint(o.Ip, o.Port)).ToList();
+        return sorted.Select(o => new IPEndPoint(o.Ip, o.Port)).ToArray();
     }
 }
