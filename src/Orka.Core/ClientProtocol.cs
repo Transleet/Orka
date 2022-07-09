@@ -12,7 +12,6 @@ public class ClientProtocol
     public uint MainSigMap { get; set; }
     public string SortVersionName { get; set; }
     public string SdkVersion { get; set; }
-    public ClientProtocol Protocol { get; set; }
     public byte[] ApkSign { get; set; }
 
     static ClientProtocol()

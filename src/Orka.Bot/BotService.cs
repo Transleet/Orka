@@ -20,7 +20,7 @@ internal class BotService<T> : BackgroundService where T : IOrkaBot
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Start login for {BotName}", typeof(T).Name);
+        await Task.Delay(1000, stoppingToken);
         await _client.LoginAsync();
     }
 }

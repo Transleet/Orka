@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Orka.Core.Services;
-using Orka.Core.Services.WtLogin;
 
 namespace Orka.Core.Extensions;
 
@@ -14,10 +14,11 @@ public static class ServiceCollectionExtensions
         {
             services.Configure(options);
         }
+
+        services.AddOptions();
+
         services.AddHttpClient();
         services.TryAddSingleton<DeviceManager>();
-        services.TryAddSingleton<WtLoginContext>();
-        services.TryAddSingleton<WtLoginService>();
         services.TryAddSingleton<NetworkService>();
         services.TryAddSingleton<SocketService>();
         services.TryAddSingleton<IOrkaClient, OrkaClient>();

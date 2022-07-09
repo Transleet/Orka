@@ -33,7 +33,7 @@ internal static class JceSerializer
     {
         JceHelpers.ThrowIfNotJceStruct<T>();
         var obj = Activator.CreateInstance<T>();
-        var stream = new MemoryStream(data);
+        using var stream = new MemoryStream(data);
         var reader = new JceReader(stream);
         var properties = JceHelpers.GetTagsAndProperties<T>();
         (int tag, object value)? item = null;

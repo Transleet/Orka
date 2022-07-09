@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.Logging;
 
 using Orka.Core.Crypto;
 using Orka.Core.Extensions;
+using Orka.Core.Packets;
 using Orka.Core.Serialization.Jce;
 using Orka.Core.Serialization.Jce.Structs;
 
@@ -25,8 +28,9 @@ internal class NetworkService
     private readonly SocketService _socketService;
     private readonly DeviceManager _deviceManager;
 
-    private List<IPEndPoint> _servers = new();
+    private ImmutableArray<IPEndPoint> _servers;
     private bool _connected;
+    private DeviceInfo _deviceInfo;
 
     public NetworkService(ILogger<SocketService> logger, IHttpClientFactory httpClientFactory, SocketService socketService, DeviceManager deviceManager)
     {
@@ -42,20 +46,67 @@ internal class NetworkService
         {
             _logger.LogError("Can't connect to server while already connected");
         }
-        var device = _deviceManager.GetDefaultDevice();
-        SvcRspHttpServerList svcRspHttpServerList = await FetchServerListAsync(device);
-        _servers = await PingServerAsync(svcRspHttpServerList);
-        if (_servers.Count < 1)
+        _deviceInfo = _deviceManager.GetDefaultDevice();
+        var servers = new List<IPEndPoint>
+        {
+            new(IPAddress.Parse("42.81.172.81"),80),
+            new(IPAddress.Parse("114.221.148.59"),14000),
+            new(IPAddress.Parse("42.81.172.147"),443),
+            new(IPAddress.Parse("125.94.60.146"),80),
+            new(IPAddress.Parse("114.221.144.215"),80),
+            new(IPAddress.Parse("42.81.172.22"),80)
+        };
+        servers.AddRange(await FetchServerListAsync(_deviceInfo));
+        servers.AddRange((await Dns.GetHostAddressesAsync("msfwifi.3g.qq.com")).Select(_ => new IPEndPoint(_, 8080)));
+        _servers = await PingServersAsync(servers);
+        if (servers.Count < 1)
         {
             _logger.LogError("Server list was null, connect failed.");
             return;
         }
+        await _socketService.ConnectAsync(servers);
+    }
+
+    public async Task SendLoginPacketAsync(OrkaClient client)
+    {
+        var uin = client.Uin;
+        var protocol = _deviceInfo.Protocol;
+        var deviceInfo = _deviceInfo;
+        var sigInfo = client.SigInfo;
+        var stream = new MemoryStream();
+        stream.Write(Number.FromUInt16(9));
+        stream.Write(Number.FromUInt16(23));
+        stream.Write(Tlv.T18(uin, protocol));
+        stream.Write(Tlv.T1(uin));
+        stream.Write(Tlv.T106(uin, _deviceInfo, protocol, sigInfo, client.HashedPassword));
+        stream.Write(Tlv.T116(protocol));
+        stream.Write(Tlv.T100(protocol));
+        stream.Write(Tlv.T107());
+        stream.Write(Tlv.T142(protocol));
+        stream.Write(Tlv.T144(deviceInfo,sigInfo));
+        stream.Write(Tlv.T145(deviceInfo));
+        stream.Write(Tlv.T147(protocol));
+        stream.Write(Tlv.T154(sigInfo));
+        stream.Write(Tlv.T141(deviceInfo));
+        stream.Write(Tlv.T8());
+        stream.Write(Tlv.T511());
+        stream.Write(Tlv.T187(deviceInfo));
+        stream.Write(Tlv.T188(deviceInfo));
+        stream.Write(Tlv.T194(deviceInfo));
+        stream.Write(Tlv.T191());
+        stream.Write(Tlv.T202(deviceInfo));
+        stream.Write(Tlv.T177(protocol));
+        stream.Write(Tlv.T516());
+        stream.Write(Tlv.T521());
+        stream.Write(Tlv.T525());
+        var body = stream.ToArray();
+        await _socketService.SendAsync(body);
     }
 
 
-    private async Task<SvcRspHttpServerList> FetchServerListAsync(DeviceInfo deviceInfo)
+    private async Task<List<IPEndPoint>> FetchServerListAsync(DeviceInfo deviceInfo)
     {
-        _logger.LogInformation("Fetching server list...");
+        _logger.LogInformation("Start fetching server list.");
         var httpClient = _httpClientFactory.CreateClient();
         httpClient.Timeout = TimeSpan.FromSeconds(10);
         byte[] key = Convert.FromHexString("F0441F5FF42DA58FDCF7949ABA62D411");
@@ -94,7 +145,7 @@ internal class NetworkService
         byte[] body;
         try
         {
-            var rsp = await httpClient.PostAsync("https://configsvr.msf.3g.qq.com/configsvr/serverlist.jsp?mType=getssolist",
+            var rsp = await httpClient.PostAsync("https://configsvr.msf.3g.qq.com/configsvr/serverlist.jsp",
                 new ByteArrayContent(reqData));
             body = await rsp.Content.ReadAsByteArrayAsync();
         }
@@ -109,34 +160,21 @@ internal class NetworkService
         if (data.Map["HttpServerListRes"] is byte[] res)
         {
             var serverList = JceSerializer.Deserialize<SvcRspHttpServerList>(res[1..^1]);
-            return serverList;
+            return serverList.Servers.Where(_ => IPAddress.TryParse(_.Server, out var _)).Select(_ => new IPEndPoint(IPAddress.Parse(_.Server), _.Port)).ToList();
         }
-        else
-        {
-            throw new Exception("Unable to fetch server list.");
-        }
+        throw new Exception("Unable to fetch server list.");
     }
 
-    private async Task<List<IPEndPoint>> PingServerAsync(SvcRspHttpServerList list)
+    private async Task<ImmutableArray<IPEndPoint>> PingServersAsync(IEnumerable<IPEndPoint> ips)
     {
-        Ping ping = new();
-        var pinged = new List<dynamic>();
-        foreach (SsoServerInfo ssoServerInfo in list.Servers)
+        var ipList = ips.ToList();
+        var tasks = ipList.Select(_ =>
         {
-            PingReply pingReply = await ping.SendPingAsync(ssoServerInfo.Server,2000);
-            if (pingReply.Status != IPStatus.Success)
-            {
-                continue;
-            }
-            pinged.Add(new
-            {
-                Ms = pingReply.RoundtripTime,
-                Ip = pingReply.Address,
-                ssoServerInfo.Port
-            });
-        }
-
-        var sorted = pinged.OrderBy(o => o.Ms);
-        return sorted.Select(o => new IPEndPoint(o.Ip, o.Port)).ToList();
+            var ping = new Ping();
+            return ping.SendPingAsync(_.Address, 2000);
+        }).ToList();
+        var result = await Task.WhenAll(tasks);
+        return result.Where(_ => _.Status == IPStatus.Success).OrderBy(_ => _.RoundtripTime)
+            .Join(ipList, _ => _.Address, _ => _.Address, (_, ip) => ip).ToImmutableArray();
     }
 }

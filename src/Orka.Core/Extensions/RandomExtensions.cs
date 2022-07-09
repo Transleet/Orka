@@ -2,7 +2,7 @@
 
 namespace Orka.Core.Extensions;
 
-public static class RandomExtensions
+internal static class RandomExtensions
 {
     public static byte[] GetRandomBytes(this Random random, int length = 64)
     {

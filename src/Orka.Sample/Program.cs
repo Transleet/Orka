@@ -11,13 +11,14 @@ namespace Orka.Sample;
 
 public class Program
 {
-    public static void Main(string[] args) {
+    public static async Task Main(string[] args) {
         var builder = WebApplication.CreateBuilder(args);
         if (builder.Environment.IsProduction())
         {
             builder.Configuration.AddAzureKeyVault(new Uri("https://orkasamplesecrets.vault.azure.net/"),
                 new DefaultAzureCredential());
         }
+        
         builder.Host.UseSerilog((context, services, config) =>
         {
             config
@@ -36,6 +37,6 @@ public class Program
 
         var app = builder.Build();
         app.UseSerilogRequestLogging();
-        app.Run();
+        await app.RunAsync();
     }
 }
