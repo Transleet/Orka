@@ -4,20 +4,15 @@ using System.Linq;
 
 namespace Orka.Core.Crypto;
 
-internal class Tea
+internal static class Tea
 {
-    private readonly uint[] _key;
-    public Tea(IReadOnlyCollection<byte> key)
+    public static byte[] Encrypt(byte[] src, byte[] key)
     {
-        if (key.Count != 16)
+        if (key.Length != 16)
         {
             throw new Exception("Key length must be 16.");
         }
-        _key = key.Chunk(4).Select(Number.ToUInt32).ToArray();
-    }
-
-    public byte[] Encrypt(byte[] src)
-    {
+        uint[] keyArray = key.Chunk(4).Select(Number.ToUInt32).ToArray();
         int length = src.Length;
         int fill = 10 - (length + 1) % 8;
         byte[] dst = new byte[fill + length + 7];
@@ -28,7 +23,7 @@ internal class Tea
         {
             ulong block = Number.ToUInt64(dst[i..]);
             ulong holder = block ^ iv1;
-            iv1 = Encode(holder);
+            iv1 = Encode(keyArray, holder);
             iv1 ^= iv2;
             iv2 = holder;
             Number.FromUInt64(iv1).CopyTo(dst, i);
@@ -36,30 +31,34 @@ internal class Tea
         return dst;
     }
 
-    public byte[] Decrypt(byte[] data)
+    public static byte[] Decrypt(byte[] data,byte[] key)
     {
+        if (key.Length != 16)
+        {
+            throw new Exception("Key length must be 16.");
+        }
         if (data.Length < 16 || data.Length % 8 != 0)
         {
             throw new Exception();
         }
-
+        uint[] keyArray = key.Chunk(4).Select(Number.ToUInt32).ToArray();
         byte[] dst = new byte[data.Length];
         ulong iv2 = 0, holder = 0;
         for (int i = 0; i < dst.Length; i += 8)
         {
             ulong iv1 = Number.ToUInt64(data[i..]);
             iv2 ^= iv1;
-            iv2 = Decode(iv2);
+            iv2 = Decode(keyArray, iv2);
             Number.FromUInt64(iv2 ^ holder).CopyTo(dst, i);
             holder = iv1;
         }
         return dst[((dst[0] & 7) + 3)..(data.Length - 7)];
     }
 
-    private ulong Encode(ulong n)
+    private static ulong Encode(uint[] key, ulong n)
     {
         (uint v0, uint v1) = ((uint)(n >> 32), (uint)n);
-        (uint t0, uint t1, uint t2, uint t3) = (_key[0], _key[1], _key[2], _key[3]);
+        (uint t0, uint t1, uint t2, uint t3) = (key[0], key[1], key[2], key[3]);
         v0 += (v1 + 0x9e3779b9) ^ ((v1 << 4) + t0) ^ ((v1 >> 5) + t1);
         v1 += (v0 + 0x9e3779b9) ^ ((v0 << 4) + t2) ^ ((v0 >> 5) + t3);
         v0 += (v1 + 0x3c6ef372) ^ ((v1 << 4) + t0) ^ ((v1 >> 5) + t1);
@@ -95,10 +94,10 @@ internal class Tea
         return (ulong)v0 << 32 | v1;
     }
 
-    private ulong Decode(ulong n)
+    private static ulong Decode(uint[] key, ulong n)
     {
         (uint v0, uint v1) = ((uint)(n >> 32), (uint)n);
-        (uint t0, uint t1, uint t2, uint t3) = (_key[0], _key[1], _key[2], _key[3]);
+        (uint t0, uint t1, uint t2, uint t3) = (key[0], key[1], key[2], key[3]);
         v1 -= (v0 + 0xe3779b90) ^ ((v0 << 4) + t2) ^ ((v0 >> 5) + t3);
         v0 -= (v1 + 0xe3779b90) ^ ((v1 << 4) + t0) ^ ((v1 >> 5) + t1);
         v1 -= (v0 + 0x454021d7) ^ ((v0 << 4) + t2) ^ ((v0 >> 5) + t3);

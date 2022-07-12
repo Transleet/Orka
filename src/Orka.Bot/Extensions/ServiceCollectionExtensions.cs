@@ -12,7 +12,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddOrkaBot<T>(this IServiceCollection services) where T : class, IOrkaBot
     {
         services.AddHostedService<BotService<T>>();
-        Core.Extensions.ServiceCollectionExtensions.TyrAddOrkaClient(services);
+        services.AddSingleton<DeviceInfoManager>();
+        Core.Extensions.ServiceCollectionExtensions.AddOrkaClient(services);
         services.AddSingleton<T>();
         return services;
     }

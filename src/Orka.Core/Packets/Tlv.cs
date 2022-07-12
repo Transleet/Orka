@@ -31,7 +31,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T16(DeviceInfo deviceInfo, ClientProtocol protocol)
+    public static byte[] T16(DeviceInfo deviceInfo, ApkInfo protocol)
     {
         return CreateTlvPacket(0x16, stream =>
         {
@@ -44,7 +44,7 @@ internal static class Tlv
             stream.WriteTlv(protocol.ApkSign);
         });
     }
-    public static byte[] T18(Uin uin, ClientProtocol protocol)
+    public static byte[] T18(Uin uin, ApkInfo protocol)
     {
         return CreateTlvPacket(0x18, stream =>
         {
@@ -115,7 +115,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T100(ClientProtocol protocol, bool emp = false)
+    public static byte[] T100(ApkInfo protocol, bool emp = false)
     {
         return CreateTlvPacket(0x100, stream =>
         {
@@ -136,7 +136,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T106(Uin uin, DeviceInfo deviceInfo, ClientProtocol protocol, SigInfo sigInfo, byte[] md5Password)
+    public static byte[] T106(Uin uin, DeviceInfo deviceInfo, ApkInfo protocol, SigInfo sigInfo, byte[] md5Password)
     {
         return CreateTlvPacket(0x106, s =>
         {
@@ -164,8 +164,7 @@ internal static class Tlv
             key.AddRange(md5Password);
             key.AddRange(new byte[4]);
             key.AddRange(Number.FromUInt32(uin));
-            var tea = new Tea(MD5.HashData(key.ToArray()));
-            s.Write(tea.Encrypt(body));
+            s.Write(Tea.Encrypt(body,MD5.HashData(key.ToArray())));
         });
 
     }
@@ -197,7 +196,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T116(ClientProtocol protocol)
+    public static byte[] T116(ApkInfo protocol)
     {
         return CreateTlvPacket(0x116, stream =>
         {
@@ -248,7 +247,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T142(ClientProtocol protocol)
+    public static byte[] T142(ApkInfo protocol)
     {
         return CreateTlvPacket(0x142, stream =>
         {
@@ -270,14 +269,13 @@ internal static class Tlv
         return CreateTlvPacket(0x144, stream =>
         {
             using var s = new MemoryStream();
-            var tea = new Tea(sigInfo.Tgtgt);
             s.WriteUInt16(5);
             s.Write(T109(deviceInfo));
             s.Write(T52D(deviceInfo));
             s.Write(T124(deviceInfo));
             s.Write(T128(deviceInfo));
             s.Write(T16E(deviceInfo));
-            stream.Write(tea.Encrypt(s.ToArray()));
+            stream.Write(Tea.Encrypt(s.ToArray(), sigInfo.Tgtgt));
         });
     }
 
@@ -289,7 +287,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T147(ClientProtocol protocol)
+    public static byte[] T147(ApkInfo protocol)
     {
         return CreateTlvPacket(0x147, stream =>
         {
@@ -303,7 +301,7 @@ internal static class Tlv
     {
         return CreateTlvPacket(0x154, stream =>
         {
-            stream.WriteUInt32(sigInfo.SequenceId + 1);
+            stream.WriteUInt32(sigInfo.SeqId);
         });
     }
 
@@ -323,7 +321,7 @@ internal static class Tlv
         });
     }
 
-    public static byte[] T177(ClientProtocol protocol)
+    public static byte[] T177(ApkInfo protocol)
     {
         return CreateTlvPacket(0x177, stream =>
         {
@@ -537,65 +535,7 @@ internal static class Tlv
         return pkt;
     }
 
-    private static void WriteUInt8(this Stream stream, byte n)
-    {
-        stream.WriteByte(n);
-    }
-    private static void WriteUInt16(this Stream stream, ushort n)
-    {
-        stream.Write(Number.FromUInt16(n));
-    }
+    
 
-    private static void WriteUInt32(this Stream stream, uint n)
-    {
-        stream.Write(Number.FromUInt32(n));
-    }
-
-    private static void WriteUInt64(this Stream stream, ulong n)
-    {
-        stream.Write(Number.FromUInt64(n));
-    }
-
-    private static void WriteInt32(this Stream stream, int n)
-    {
-        stream.Write(Number.FromInt32(n));
-    }
-
-    private static void WriteString(this Stream stream, string s)
-    {
-        stream.Write(Encoding.UTF8.GetBytes(s));
-    }
-
-    private static void WriteStringWithLength(this Stream stream, string s)
-    {
-        stream.WriteUInt32((uint)Encoding.UTF8.GetByteCount(s));
-        stream.WriteString(s);
-    }
-
-    private static void WriteWithLength(this Stream stream, byte[] b)
-    {
-        stream.WriteUInt32((uint)b.Length);
-        stream.Write(b);
-    }
-
-    private static void WriteTlv(this Stream stream, string s)
-    {
-        WriteTlv(stream, Encoding.UTF8.GetBytes(s));
-    }
-
-    private static void WriteTlv(this Stream stream, byte[] b)
-    {
-        stream.WriteUInt16((ushort)b.Length);
-        stream.Write(b);
-    }
-
-    private static void WriteTlv(this Stream stream, string s, int limit)
-    {
-        WriteTlv(stream, Encoding.UTF8.GetBytes(s), limit);
-    }
-
-    private static void WriteTlv(this Stream stream, byte[] b, int limit)
-    {
-        WriteTlv(stream, b.Length <= limit ? b : b[..limit]);
-    }
+    
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Orka.Core.Services;
@@ -10,6 +11,7 @@ internal class SocketService
 
     private readonly TcpClient _tcpClient = new();
     private NetworkStream? _dataStream;
+    private Task _loopTask;
 
     public SocketService(ILogger<SocketService> logger)
     {
@@ -45,19 +47,21 @@ internal class SocketService
             _logger.LogError("Can't connect to any server.");
         }
         _dataStream = _tcpClient.GetStream();
+        _loopTask = StartNetLoopAsync();
     }
 
     public async Task SendAsync(byte[] pkt)
     {
-        if (!Connected)
+        if (!Connected || _dataStream is null)
         {
-            _logger.LogWarning("Can't send packet when TcpClient is not connected.");
+            _logger.LogError("Can't send packet when TcpClient is not connected.");
+            throw new Exception("Try to send packet when TcpClient is not connected.");
         }
 
         try
         {
-            var stream = _tcpClient.GetStream();
-            await stream.WriteAsync(pkt);
+            await _dataStream.WriteAsync(pkt);
+            _logger.LogInformation("Send pkt with length : {length}", pkt.Length);
         }
         catch (Exception e)
         {
@@ -65,5 +69,22 @@ internal class SocketService
             throw;
         }
 
+    }
+
+    private async Task StartNetLoopAsync()
+    {
+        while (Connected && _dataStream is not null)
+        {
+            await Task.Delay(1000);
+            Console.WriteLine($"Available: {_tcpClient.Available}");
+            if (_tcpClient.Available > 0)
+            {
+                byte[] buffer = new byte[4];
+                await _dataStream.ReadExactlyAsync(buffer);
+                int length = Number.ToInt32(buffer);
+                _logger.LogInformation("Receive packet with length: {length}", length);
+            }
+
+        }
     }
 }

@@ -7,4 +7,5 @@ public interface IOrkaClient
     Uin Uin { get; set; }
     
     Task LoginAsync();
+    Task LoginWithPasswordAsync(DeviceInfo deviceInfo);
 }

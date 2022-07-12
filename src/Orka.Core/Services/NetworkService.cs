@@ -26,27 +26,23 @@ internal class NetworkService
     private readonly ILogger<SocketService> _logger;
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly SocketService _socketService;
-    private readonly DeviceManager _deviceManager;
 
     private ImmutableArray<IPEndPoint> _servers;
     private bool _connected;
-    private DeviceInfo _deviceInfo;
 
-    public NetworkService(ILogger<SocketService> logger, IHttpClientFactory httpClientFactory, SocketService socketService, DeviceManager deviceManager)
+    public NetworkService(ILogger<SocketService> logger, IHttpClientFactory httpClientFactory, SocketService socketService)
     {
         _logger = logger;
         _httpClientFactory = httpClientFactory;
         _socketService = socketService;
-        _deviceManager = deviceManager;
     }
 
-    public async Task ConnectAsync()
+    public async Task ConnectAsync(DeviceInfo deviceInfo)
     {
         if (_connected)
         {
             _logger.LogError("Can't connect to server while already connected");
         }
-        _deviceInfo = _deviceManager.GetDefaultDevice();
         var servers = new List<IPEndPoint>
         {
             new(IPAddress.Parse("42.81.172.81"),80),
@@ -56,7 +52,7 @@ internal class NetworkService
             new(IPAddress.Parse("114.221.144.215"),80),
             new(IPAddress.Parse("42.81.172.22"),80)
         };
-        servers.AddRange(await FetchServerListAsync(_deviceInfo));
+        servers.AddRange(await FetchServerListAsync(deviceInfo));
         servers.AddRange((await Dns.GetHostAddressesAsync("msfwifi.3g.qq.com")).Select(_ => new IPEndPoint(_, 8080)));
         _servers = await PingServersAsync(servers);
         if (servers.Count < 1)
@@ -67,40 +63,9 @@ internal class NetworkService
         await _socketService.ConnectAsync(servers);
     }
 
-    public async Task SendLoginPacketAsync(OrkaClient client)
+    public async Task SendLoginPacketAsync(byte[] pkt)
     {
-        var uin = client.Uin;
-        var protocol = _deviceInfo.Protocol;
-        var deviceInfo = _deviceInfo;
-        var sigInfo = client.SigInfo;
-        var stream = new MemoryStream();
-        stream.Write(Number.FromUInt16(9));
-        stream.Write(Number.FromUInt16(23));
-        stream.Write(Tlv.T18(uin, protocol));
-        stream.Write(Tlv.T1(uin));
-        stream.Write(Tlv.T106(uin, _deviceInfo, protocol, sigInfo, client.HashedPassword));
-        stream.Write(Tlv.T116(protocol));
-        stream.Write(Tlv.T100(protocol));
-        stream.Write(Tlv.T107());
-        stream.Write(Tlv.T142(protocol));
-        stream.Write(Tlv.T144(deviceInfo,sigInfo));
-        stream.Write(Tlv.T145(deviceInfo));
-        stream.Write(Tlv.T147(protocol));
-        stream.Write(Tlv.T154(sigInfo));
-        stream.Write(Tlv.T141(deviceInfo));
-        stream.Write(Tlv.T8());
-        stream.Write(Tlv.T511());
-        stream.Write(Tlv.T187(deviceInfo));
-        stream.Write(Tlv.T188(deviceInfo));
-        stream.Write(Tlv.T194(deviceInfo));
-        stream.Write(Tlv.T191());
-        stream.Write(Tlv.T202(deviceInfo));
-        stream.Write(Tlv.T177(protocol));
-        stream.Write(Tlv.T516());
-        stream.Write(Tlv.T521());
-        stream.Write(Tlv.T525());
-        var body = stream.ToArray();
-        await _socketService.SendAsync(body);
+        await _socketService.SendAsync(pkt);
     }
 
 
@@ -117,7 +82,7 @@ internal class NetworkService
             B3 = 1,
             S4 = "00000",
             I5 = 100,
-            I6 = (int)deviceInfo.Protocol.AppId,
+            I6 = (int)deviceInfo.ApkInfo.AppId,
             S7 = deviceInfo.IMEI,
             L8 = 0,
             L9 = 0,
@@ -135,13 +100,12 @@ internal class NetworkService
             IRequestId = 0,
             SServantName = "ConfigHttp",
             SFuncName = "HttpServerListReq",
-            SBuffer = new RequestDataVersion3 { Map = new JceMap { ["HttpServerListReq"] = BinaryPacket.PackUniRequestData(payload) } }.ToByteArray(),
+            SBuffer = new RequestDataVersion3 { Map = new JceMap { ["HttpServerListReq"] = Packet.PackUniRequestData(payload) } }.ToByteArray(),
             ITimeout = 0,
             Context = new JceMap(),
             Status = new JceMap()
         }.ToByteArray();
-        var tea = new Tea(key);
-        byte[] reqData = tea.Encrypt(BinaryPacket.CombineLength((uint)pkt.Length, pkt));
+        byte[] reqData = Tea.Encrypt(Packet.CombineWithLength(pkt),key);
         byte[] body;
         try
         {
@@ -154,7 +118,7 @@ internal class NetworkService
             _logger.LogTrace(e, e.Message);
             throw;
         }
-        byte[] dec = tea.Decrypt(body);
+        byte[] dec = Tea.Decrypt(body, key);
         var rspPacket = JceSerializer.Deserialize<RequestPacket>(dec[4..]);
         var data = JceSerializer.Deserialize<RequestDataVersion3>(rspPacket.SBuffer);
         if (data.Map["HttpServerListRes"] is byte[] res)

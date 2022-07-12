@@ -8,7 +8,8 @@ namespace Orka.Core
 {
     internal class SigInfo
     {
-        public uint SequenceId { get; set; }
+        private uint _seqId;
+        public uint SeqId { get => _seqId; set => _seqId = value; }
 
         public byte[] Session { get; set; }
 
@@ -27,8 +28,10 @@ namespace Orka.Core
 
         public byte[] QRSig { get; set; }
 
-
-
+        public void NextSeqId()
+        {
+            Interlocked.Increment(ref _seqId);
+        }
 
     }
 }

@@ -6,14 +6,6 @@ using Orka.Core.Serialization.ProtoBuf;
 
 namespace Orka.Core;
 
-public class Version
-{
-    public string Incremental { get; set; }
-    public string Release { get; set; }
-    public string CodeName { get; set; }
-    public uint Sdk { get; set; }
-}
-
 public class DeviceInfo
 {
     public byte[] Display { get; set; }
@@ -41,6 +33,14 @@ public class DeviceInfo
     public byte[] VendorOSName { get; set; }
     public byte[] Guid { get; set; }
     public byte[] TgtgtKey { get; set; }
-    public ClientProtocol Protocol { get; set; }
+    public ApkInfo ApkInfo { get; set; }
     public Version Version { get; set; }
+}
+
+public class Version
+{
+    public string Incremental { get; set; }
+    public string Release { get; set; }
+    public string CodeName { get; set; }
+    public uint Sdk { get; set; }
 }

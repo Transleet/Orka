@@ -12,7 +12,6 @@ public class TeaTests
     {
         byte[] key = Random.Shared.GetRandomBytes(16);
         byte[] expected = Random.Shared.GetRandomBytes();
-        var tea = new Tea(key);
         byte[] enc = MockTea.Encrypt(expected, key);
         byte[] dec = MockTea.Decrypt(enc, key);
         Assert.Equal(expected, dec);
@@ -23,9 +22,8 @@ public class TeaTests
     {
         byte[] key = Random.Shared.GetRandomBytes(16);
         byte[] expected = Random.Shared.GetRandomBytes();
-        var tea = new Tea(key);
-        byte[] enc = tea.Encrypt(expected);
-        byte[] dec = tea.Decrypt(enc);
+        byte[] enc = Tea.Encrypt(expected,key);
+        byte[] dec = Tea.Decrypt(enc, key);
         Assert.Equal(expected, dec);
     }
 
@@ -34,9 +32,8 @@ public class TeaTests
     {
         byte[] key = Random.Shared.GetRandomBytes(16);
         byte[] expected = Random.Shared.GetRandomBytes();
-        var tea = new Tea(key);
         byte[] enc = MockTea.Encrypt(expected, key);
-        byte[] dec = tea.Decrypt(enc);
+        byte[] dec = Tea.Decrypt(enc, key);
         Assert.Equal(expected, dec);
     }
 
@@ -47,8 +44,7 @@ public class TeaTests
     {
         byte[] key = Random.Shared.GetRandomBytes(16);
         byte[] expected = Random.Shared.GetRandomBytes();
-        var tea = new Tea(key);
-        byte[] enc = tea.Encrypt(expected);
+        byte[] enc = Tea.Encrypt(expected, key);
         byte[] dec = MockTea.Decrypt(enc, key);
         Assert.Equal(expected, dec);
     }

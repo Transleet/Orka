@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+using Orka.Core;
 using Orka.Core.Extensions;
+using Version = Orka.Core.Version;
 
-namespace Orka.Core;
+namespace Orka.Bot;
 
-internal class DeviceManager
+internal class DeviceInfoManager
 {
     private static readonly DeviceInfo s_default = new()
     {
@@ -34,7 +32,7 @@ internal class DeviceManager
         APN = Encoding.UTF8.GetBytes("wifi"),
         VendorName = Encoding.UTF8.GetBytes("Orka"),
         VendorOSName = Encoding.UTF8.GetBytes("Orka"),
-        Protocol = ClientProtocol.Ipad,
+        ApkInfo = ApkInfo.AndroidPhone,
         Guid = System.Guid.NewGuid().ToByteArray(),
         TgtgtKey = MD5.HashData(Random.Shared.GetRandomBytes(16)),
         IMSI = MD5.HashData(Encoding.UTF8.GetBytes("468356291846738")),
@@ -46,5 +44,5 @@ internal class DeviceManager
             Sdk = 29,
         }
     };
-    public DeviceInfo GetDefaultDevice() => s_default;
+    public DeviceInfo GetDefaultDeviceInfo() => s_default;
 }

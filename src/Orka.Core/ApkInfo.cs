@@ -1,6 +1,6 @@
 ﻿namespace Orka.Core;
 
-public class ClientProtocol
+public class ApkInfo
 {
     public string ApkId { get; set; }
     public uint AppId { get; set; }
@@ -14,9 +14,9 @@ public class ClientProtocol
     public string SdkVersion { get; set; }
     public byte[] ApkSign { get; set; }
 
-    static ClientProtocol()
+    static ApkInfo()
     {
-        AndroidPhone = new ClientProtocol()
+        AndroidPhone = new ApkInfo()
         {
             ApkId = "com.tencent.mobileqq",
             AppId = 537066738,
@@ -30,7 +30,7 @@ public class ClientProtocol
             SubSigMap = 0x10400,
             MainSigMap = 34869472
         };
-        AndroidWatch = new ClientProtocol()
+        AndroidWatch = new ApkInfo()
         {
             ApkId = "com.tencent.qqlite",
             AppId = 537064446,
@@ -44,7 +44,7 @@ public class ClientProtocol
             SubSigMap = 0x10400,
             MainSigMap = 34869472
         };
-        Ipad = new ClientProtocol()
+        Ipad = new ApkInfo()
         {
             ApkId = "com.tencent.minihd.qq",
             AppId = 537065739,
@@ -58,7 +58,7 @@ public class ClientProtocol
             SubSigMap = 66560,
             MainSigMap = 1970400
         };
-        Mac = new ClientProtocol()
+        Mac = new ApkInfo()
         {
             ApkId = "com.tencent.minihd.qq",
             AppId = 537064315,
@@ -72,7 +72,7 @@ public class ClientProtocol
             SubSigMap = 66560,
             MainSigMap = 1970400
         };
-        QiDian = new ClientProtocol()
+        QiDian = new ApkInfo()
         {
             ApkId = "com.tencent.qidian",
             AppId = 537061386,
@@ -88,9 +88,9 @@ public class ClientProtocol
         };
     }
 
-    public static ClientProtocol AndroidPhone { get; set; }
-    public static ClientProtocol AndroidWatch { get; set; }
-    public static ClientProtocol Ipad { get; set; }
-    public static ClientProtocol Mac { get; set; }
-    public static ClientProtocol QiDian { get; set; }
+    public static ApkInfo AndroidPhone { get; set; }
+    public static ApkInfo AndroidWatch { get; set; }
+    public static ApkInfo Ipad { get; set; }
+    public static ApkInfo Mac { get; set; }
+    public static ApkInfo QiDian { get; set; }
 }
